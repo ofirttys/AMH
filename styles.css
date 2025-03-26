@@ -11,21 +11,22 @@ h1 {
 }
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 3px;
 }
 
 .form-group input {
     width: 100%;
-    padding: 8px;
+    padding: 5px;
     box-sizing: border-box;
+    height: 30px;
 }
 
-/* New styles for input method radio buttons */
+/* Input method radio buttons */
 .input-method-group .radio-container {
     display: flex;
     justify-content: flex-end;
@@ -42,7 +43,7 @@ h1 {
     width: auto;
 }
 
-/* Styles for AMH input with units */
+/* AMH input with units */
 .amh-input-group .input-with-units {
     display: flex;
     align-items: center;
@@ -83,15 +84,15 @@ h1 {
 
 button {
     width: 100%;
-    padding: 10px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
+    padding: 8px;
+    background-color: #e6e6fa; /* Light purple */
+    color: black;
+    border: 1px solid #d8bfd8;
     cursor: pointer;
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #d8bfd8;
 }
 
 /* Ensure age input group is displayed correctly */

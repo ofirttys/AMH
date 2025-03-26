@@ -1,17 +1,24 @@
 // Set max date to today
+// Set max date to today
 document.getElementById('birthDate').max = luxon.DateTime.now().toISODate();
 
 // Toggle input method
 document.querySelectorAll('input[name="inputMethod"]').forEach(radio => {
     radio.addEventListener('change', function() {
         const birthDateInput = document.getElementById('birthDate');
+        const birthDateGroup = document.getElementById('birthDateGroup');
+        const birthDateLabel = document.getElementById('birthDateLabel');
         const ageInputGroup = document.getElementById('ageInputGroup');
         
         if (this.value === 'date') {
             birthDateInput.style.display = 'block';
+            birthDateGroup.style.display = 'block';
+            birthDateLabel.style.display = 'block';
             ageInputGroup.style.display = 'none';
         } else {
             birthDateInput.style.display = 'none';
+            birthDateGroup.style.display = 'none';
+            birthDateLabel.style.display = 'none';
             ageInputGroup.style.display = 'block';
         }
     });

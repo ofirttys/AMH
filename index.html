@@ -10,19 +10,16 @@
 <body>
     <h1>AMH Calculator</h1>
     <div id="inputForm">
-        <div class="form-group input-method-group">
-            <label>Input Method</label>
-            <div class="radio-container">
-                <label>
-                    <input type="radio" name="inputMethod" value="date"> Date of Birth
-                </label>
-                <label>
-                    <input type="radio" name="inputMethod" value="age" checked> Direct Age
-                </label>
-            </div>
+        <div class="input-method-group radio-container">
+            <label>
+                <input type="radio" name="inputMethod" value="date"> Date of Birth
+            </label>
+            <label>
+                <input type="radio" name="inputMethod" value="age" checked> Direct Age
+            </label>
         </div>
-        <div class="form-group">
-            <label for="birthDate">Date of Birth:</label>
+        <div id="birthDateGroup" class="form-group">
+            <label for="birthDate" id="birthDateLabel">Date of Birth:</label>
             <input type="date" id="birthDate" max="" style="display: none;" />
         </div>
         <div id="ageInputGroup" class="form-group">
