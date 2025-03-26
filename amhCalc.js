@@ -4,16 +4,17 @@ document.getElementById('birthDate').max = luxon.DateTime.now().toISODate();
 // Toggle input method
 document.querySelectorAll('input[name="inputMethod"]').forEach(radio => {
     radio.addEventListener('change', function() {
-        document.getElementById('birthDate').parentElement.style.display = 
-            this.value === 'date' ? 'block' : 'none';
-        document.getElementById('ageInputGroup').style.display = 
-            this.value === 'age' ? 'block' : 'none';
+        const birthDateInput = document.getElementById('birthDate');
+        const ageInputGroup = document.getElementById('ageInputGroup');
+        
+        if (this.value === 'date') {
+            birthDateInput.style.display = 'block';
+            ageInputGroup.style.display = 'none';
+        } else {
+            birthDateInput.style.display = 'none';
+            ageInputGroup.style.display = 'block';
+        }
     });
-
-    // Trigger initial display state
-    if (radio.checked) {
-        radio.dispatchEvent(new Event('change'));
-    }
 });
 
 // Percentile data file paths
@@ -89,19 +90,6 @@ function initializeChart() {
     document.querySelector('input[name="inputMethod"][value="age"]').checked = true;
     document.getElementById('birthDate').parentElement.style.display = 'none';
     document.getElementById('ageInputGroup').style.display = 'block';
-
-    // Add AMH units radio buttons
-    document.getElementById('inputForm').innerHTML += `
-        <div class="form-group">
-            <label>AMH Units:</label>
-            <label>
-                <input type="radio" name="amhUnits" value="pmol/L" checked> pmol/L
-            </label>
-            <label>
-                <input type="radio" name="amhUnits" value="ng/ml"> ng/ml
-            </label>
-        </div>
-    `;
 
     // Load data first
     loadPercentileData().then((dataLoaded) => {
