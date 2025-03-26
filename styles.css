@@ -39,16 +39,15 @@ h1 {
 }
 
 .input-method-group {
-    display: flex;
-    flex-direction: column;
-    gap: 10px; /* Adds spacing between sections */
+    display: flex; /* Ensures layout is side-by-side */
+    align-items: center; /* Aligns items vertically */
+    gap: 20px; /* Adds space between input groups and radio buttons */
 }
 
 .radio-container {
     display: flex;
-    flex-direction: column; /* Aligns the options vertically */
-    justify-content: flex-start;
-    margin-left: 10px; /* Adjust spacing for placement to the right */
+    flex-direction: column; /* Stacks radio buttons vertically */
+    justify-content: center; /* Ensures vertical alignment */
 }
 
 /* Input method radio buttons */
