@@ -24,36 +24,72 @@ const percentileDataFiles = {
 google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(initializeChart);
 
-let chart;
+let chartInstance = null;
 let percentileData = {};
+
+function interpolateData(data, minAge = 0, maxAge = 50) {
+    // Create an array to store interpolated values
+    const interpolatedData = new Array(maxAge + 1).fill(null);
+
+    // Sort data by x (age)
+    data.sort((a, b) => a.x - b.x);
+
+    // Interpolate values for whole number ages
+    for (let age = minAge; age <= maxAge; age++) {
+        // Find the closest two data points
+        const closestPoints = data.filter(point => Math.floor(point.x) === age);
+        
+        if (closestPoints.length > 0) {
+            // If we have points exactly at this age, take the average
+            const avgValue = closestPoints.reduce((sum, point) => sum + point.y, 0) / closestPoints.length;
+            interpolatedData[age] = avgValue;
+        } else {
+            // If no exact match, do linear interpolation
+            const lowerPoint = data.filter(point => point.x < age).pop();
+            const upperPoint = data.find(point => point.x > age);
+
+            if (lowerPoint && upperPoint) {
+                const t = (age - lowerPoint.x) / (upperPoint.x - lowerPoint.x);
+                interpolatedData[age] = lowerPoint.y + t * (upperPoint.y - lowerPoint.y);
+            }
+        }
+    }
+
+    return interpolatedData;
+}
 
 async function loadPercentileData() {
     try {
         for (const [percentileLabel, filePath] of Object.entries(percentileDataFiles)) {
             const response = await fetch(filePath);
-            percentileData[percentileLabel] = await response.json();
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status} for ${filePath}`);
+            }
+            const data = await response.json();
+            
+            // Interpolate data to get values for whole number ages
+            percentileData[percentileLabel] = interpolateData(data);
         }
+        return true;
     } catch (error) {
         console.error('Error loading percentile data:', error);
-        alert('Failed to load percentile data. Please check the data files.');
+        alert(`Failed to load percentile data: ${error.message}`);
+        return false;
     }
 }
 
 function initializeChart() {
     // Load data first
-    loadPercentileData().then(() => {
+    loadPercentileData().then((dataLoaded) => {
+        if (!dataLoaded) return;
+
         const data = new google.visualization.DataTable();
         data.addColumn('number', 'Age');
         data.addColumn('number', '10% Percentile');
-        data.addColumn({type: 'boolean', role: 'certainty'});
         data.addColumn('number', '25% Percentile');
-        data.addColumn({type: 'boolean', role: 'certainty'});
         data.addColumn('number', '50% Percentile');
-        data.addColumn({type: 'boolean', role: 'certainty'});
         data.addColumn('number', '75% Percentile');
-        data.addColumn({type: 'boolean', role: 'certainty'});
         data.addColumn('number', '90% Percentile');
-        data.addColumn({type: 'boolean', role: 'certainty'});
         data.addColumn('number', 'Patient');
         data.addColumn({type: 'string', role: 'style'});
 
@@ -62,12 +98,13 @@ function initializeChart() {
         for (let age = 0; age <= 50; age++) {
             const row = [
                 age,
-                percentileData['10%'][age], true,
-                percentileData['25%'][age], true,
-                percentileData['50%'][age], true,
-                percentileData['75%'][age], true,
-                percentileData['90%'][age], true,
-                null, 'point {size: 10; shape-type: star; fill-color: blue;}'
+                percentileData['10%'][age],
+                percentileData['25%'][age],
+                percentileData['50%'][age],
+                percentileData['75%'][age],
+                percentileData['90%'][age],
+                null,
+                'point {size: 10; shape-type: star; fill-color: blue;}'
             ];
             rows.push(row);
         }
@@ -77,7 +114,6 @@ function initializeChart() {
             title: 'AMH Levels by Age',
             curveType: 'function', // creates smooth lines
             legend: { position: 'bottom' },
-            interpolateNulls: true,
             series: {
                 0: { color: 'red' },
                 1: { color: 'orange' },
@@ -93,16 +129,22 @@ function initializeChart() {
                 3: { type: 'exponential', color: 'green', opacity: 0.5 },
                 4: { type: 'exponential', color: 'darkgreen', opacity: 0.5 }
             },
-            hAxis: { title: 'Age' },
+            hAxis: { title: 'Age', minValue: 0, maxValue: 50 },
             vAxis: { title: 'AMH Level (pmol/L)' }
         };
 
-        chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
+        chartInstance = new google.visualization.LineChart(document.getElementById('chart_div'));
+        chartInstance.draw(data, options);
     });
 }
 
 function addDataPoint() {
+    // Ensure chart is initialized
+    if (!chartInstance) {
+        alert('Chart is not yet initialized. Please wait and try again.');
+        return;
+    }
+
     // Get input method
     const dateMethod = document.querySelector('input[name="inputMethod"]:checked').value === 'date';
     
@@ -140,8 +182,15 @@ function addDataPoint() {
         }
     }
 
-    // Modify chart data to add patient point
-    const data = chart.getDataTable();
-    data.setValue(Math.round(age), 10, amhValue);
-    chart.draw(data, chart.getOptions());
+    // Get the current chart data
+    const data = chartInstance.getChartLayoutInterface().getDataTable();
+    const roundedAge = Math.round(age);
+    
+    // Set the patient point at the specified age
+    data.setValue(roundedAge, 6, amhValue);
+    
+    // Redraw the chart
+    chartInstance.draw(data, chartInstance.getOptions());
+
+    console.log(`Added patient point: Age ${roundedAge}, AMH ${amhValue}`);
 }
