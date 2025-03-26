@@ -214,11 +214,29 @@ function addDataPoint() {
 
     const roundedAge = Math.round(age);
     
-    // Create a copy of the existing data
-    const newData = new google.visualization.DataTable(chartData);
+    // Create a new DataTable to avoid modifying the original
+    const newData = new google.visualization.DataTable();
+    
+    // Copy columns from the original chart data
+    for (let i = 0; i < chartData.getNumberOfColumns(); i++) {
+        newData.addColumn(
+            chartData.getColumnType(i), 
+            chartData.getColumnLabel(i)
+        );
+    }
+    
+    // Copy all rows from the original chart data
+    for (let i = 0; i < chartData.getNumberOfRows(); i++) {
+        const row = [];
+        for (let j = 0; j < chartData.getNumberOfColumns(); j++) {
+            row.push(chartData.getValue(i, j));
+        }
+        newData.addRow(row);
+    }
     
     // Set the patient point at the specified age
     newData.setValue(roundedAge, 6, inputValue);
+    newData.setValue(roundedAge, 7, 'point {size: 15; shape-type: star; fill-color: red;}');
     
     // Redraw the chart with the updated data
     chartInstance.draw(newData, chartOptions);
