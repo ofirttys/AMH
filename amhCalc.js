@@ -72,13 +72,30 @@ async function loadPercentileData() {
         }
         return true;
     } catch (error) {
-        console.error('Error loading percentile data:', error);
         alert(`Failed to load percentile data: ${error.message}`);
         return false;
     }
 }
 
 function initializeChart() {
+    // Set direct age input as default
+    document.querySelector('input[name="inputMethod"][value="age"]').checked = true;
+    document.getElementById('birthDate').parentElement.style.display = 'none';
+    document.getElementById('ageInputGroup').style.display = 'block';
+
+    // Add AMH units radio buttons
+    document.getElementById('inputForm').innerHTML += `
+        <div class="form-group">
+            <label>AMH Units:</label>
+            <label>
+                <input type="radio" name="amhUnits" value="pmol/L" checked> pmol/L
+            </label>
+            <label>
+                <input type="radio" name="amhUnits" value="ng/ml"> ng/ml
+            </label>
+        </div>
+    `;
+
     // Load data first
     loadPercentileData().then((dataLoaded) => {
         if (!dataLoaded) return;
@@ -112,8 +129,19 @@ function initializeChart() {
 
         const options = {
             title: 'AMH Levels by Age',
+            titleTextStyle: {
+                fontSize: 18,
+                bold: true,
+                alignment: 'center'
+            },
+            width: 1800,  // 2x larger
+            height: 1000, // 2x larger
             curveType: 'function', // creates smooth lines
-            legend: { position: 'bottom' },
+            legend: { 
+                position: 'bottom', 
+                maxLines: 2,
+                alignment: 'center'
+            },
             series: {
                 0: { color: 'red' },
                 1: { color: 'orange' },
@@ -123,11 +151,11 @@ function initializeChart() {
                 5: { type: 'scatter' }
             },
             trendlines: {
-                0: { type: 'exponential', color: 'red', opacity: 0.5 },
-                1: { type: 'exponential', color: 'orange', opacity: 0.5 },
-                2: { type: 'exponential', color: 'black', opacity: 0.5 },
-                3: { type: 'exponential', color: 'green', opacity: 0.5 },
-                4: { type: 'exponential', color: 'darkgreen', opacity: 0.5 }
+                0: { type: 'polynomial', degree: 5, color: 'red', opacity: 0.5 },
+                1: { type: 'polynomial', degree: 5, color: 'orange', opacity: 0.5 },
+                2: { type: 'polynomial', degree: 5, color: 'black', opacity: 0.5 },
+                3: { type: 'polynomial', degree: 5, color: 'green', opacity: 0.5 },
+                4: { type: 'polynomial', degree: 5, color: 'darkgreen', opacity: 0.5 }
             },
             hAxis: { title: 'Age', minValue: 0, maxValue: 50 },
             vAxis: { title: 'AMH Level (pmol/L)' }
@@ -151,8 +179,15 @@ function addDataPoint() {
     let age, amhValue;
 
     // Validate AMH value
-    amhValue = parseFloat(document.getElementById('valueInput').value);
-    if (isNaN(amhValue) || amhValue <= 0) {
+    let inputValue = parseFloat(document.getElementById('valueInput').value);
+    
+    // Convert units if ng/ml is selected
+    const amhUnits = document.querySelector('input[name="amhUnits"]:checked').value;
+    if (amhUnits === 'ng/ml') {
+        inputValue *= 7.14; // Convert ng/ml to pmol/L
+    }
+
+    if (isNaN(inputValue) || inputValue <= 0) {
         alert('Please enter a valid AMH level greater than 0');
         return;
     }
@@ -182,15 +217,13 @@ function addDataPoint() {
         }
     }
 
-    // Get the current chart data
-    const data = chartInstance.getChartLayoutInterface().getDataTable();
+    // Create a new data table from the current chart
+    const data = new google.visualization.DataTable(chartInstance.getDataTable());
     const roundedAge = Math.round(age);
     
     // Set the patient point at the specified age
-    data.setValue(roundedAge, 6, amhValue);
+    data.setValue(roundedAge, 6, inputValue);
     
-    // Redraw the chart
+    // Update the chart with the new data
     chartInstance.draw(data, chartInstance.getOptions());
-
-    console.log(`Added patient point: Age ${roundedAge}, AMH ${amhValue}`);
 }
