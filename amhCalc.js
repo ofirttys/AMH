@@ -103,7 +103,7 @@ function initializeChart() {
         chartData.addColumn('number', '75% Percentile');
         chartData.addColumn('number', '90% Percentile');
         chartData.addColumn('number', 'Patient');
-        chartData.addColumn('string', 'Patient Point Style');
+        chartData.addColumn({type: 'string', role: 'style'});
 
         // Populate data with 0-50 ages and add percentile data
         const rows = [];
@@ -115,7 +115,8 @@ function initializeChart() {
                 percentileData['50%'][age] || null,
                 percentileData['75%'][age] || null,
                 percentileData['90%'][age] || null,
-                null, // Patient data point
+                null,
+                null
             ];
             rows.push(row);
         }
@@ -213,27 +214,10 @@ function addDataPoint() {
 
     const roundedAge = Math.round(age);
     
-    const newData = new google.visualization.DataTable();
-    
-    for (let i = 0; i < chartData.getNumberOfColumns(); i++) {
-        newData.addColumn(
-            chartData.getColumnType(i), 
-            chartData.getColumnLabel(i)
-        );
-    }
-    
-    for (let i = 0; i < chartData.getNumberOfRows(); i++) {
-        const row = [];
-        for (let j = 0; j < chartData.getNumberOfColumns(); j++) {
-            row.push(chartData.getValue(i, j));
-        }
-        newData.addRow(row);
-    }
-    
-    // Set the patient point at the specified age
-    newData.setValue(roundedAge, 6, inputValue);
-    newData.setValue(roundedAge, 7, 'point {size: 15; shape-type: star; fill-color: red;}');
+    // Update the existing chartData
+    chartData.setValue(roundedAge, 6, inputValue);
+    chartData.setValue(roundedAge, 7, 'point {size: 15; shape-type: star; fill-color: red;}');
     
     // Redraw the chart with the updated data
-    chartInstance.draw(newData, chartOptions);
+    chartInstance.draw(chartData, chartOptions);
 }
