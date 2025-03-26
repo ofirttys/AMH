@@ -55,8 +55,7 @@ h1 {
 .radio-container {
     display: flex;
     flex-direction: column; /* Stacks radio buttons vertically */
-    justify-content: flex-start;
-	text-align: left;
+    justify-content: center; /* Ensures vertical alignment */
 }
 
 .input-method-group .radio-container label {
@@ -77,9 +76,7 @@ h1 {
 }
 
 .amh-input-group .input-with-units input {
-    flex-grow: 0;
-	width: 250px;
-	box-sizing: border-box;
+    flex-grow: 1;
 }
 
 .amh-units {
