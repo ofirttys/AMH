@@ -162,7 +162,7 @@ function initializeChart() {
                 4: { type: 'polynomial', degree: 5, color: 'darkgreen' }
             },
             hAxis: { title: 'Age', minValue: 0, maxValue: 45, gridlines: { count: 46 } },
-            vAxis: { title: 'AMH Level (pmol/L)' }
+            vAxis: { title: 'AMH Level (pmol/L)', minValue: 0, maxValue: 100, gridlines: { count: 50 } }
         };
 
         chartInstance = new google.visualization.LineChart(document.getElementById('chart_div'));
