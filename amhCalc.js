@@ -93,14 +93,12 @@ async function loadPercentileData() {
 }
 
 function initializeChart() {
-    // Set age input as default
     document.querySelector('input[name="inputMethod"][value="age"]').checked = true;
     document.getElementById('birthDate').style.display = 'none';
     document.getElementById('birthDateGroup').style.display = 'none';
     document.getElementById('birthDateLabel').style.display = 'none';
     document.getElementById('ageInputGroup').style.display = 'block';
 
-	// Load data first
     loadPercentileData().then((dataLoaded) => {
         if (!dataLoaded) return;
 
@@ -114,7 +112,10 @@ function initializeChart() {
         chartData.addColumn('number', 'Patient');
         chartData.addColumn({type: 'string', role: 'style'});
 
-        // Populate data with 0-50 ages and add percentile data
+        // Add an annotation column for trendline labels
+        chartData.addColumn({type: 'string', role: 'annotation'});
+        chartData.addColumn({type: 'string', role: 'annotationText'});
+
         const rows = [];
         for (let age = 0; age <= 50; age++) {
             const row = [
@@ -125,7 +126,9 @@ function initializeChart() {
                 percentileData['75%'][age] || null,
                 percentileData['90%'][age] || null,
                 null,
-                null
+                null,
+                age === 25 ? 'Label' : null, // Add annotation at a specific age
+                age === 25 ? 'This is a label for trendline' : null // Annotation description
             ];
             rows.push(row);
         }
