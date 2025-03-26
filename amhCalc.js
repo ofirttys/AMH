@@ -93,12 +93,14 @@ async function loadPercentileData() {
 }
 
 function initializeChart() {
-    // Set direct age input as default
+    // Set age input as default
     document.querySelector('input[name="inputMethod"][value="age"]').checked = true;
     document.getElementById('birthDate').style.display = 'none';
+    document.getElementById('birthDateGroup').style.display = 'none';
+    document.getElementById('birthDateLabel').style.display = 'none';
     document.getElementById('ageInputGroup').style.display = 'block';
 
-    // Load data first
+	// Load data first
     loadPercentileData().then((dataLoaded) => {
         if (!dataLoaded) return;
 
@@ -206,7 +208,7 @@ function addDataPoint() {
         const currentDate = luxon.DateTime.now();
         age = currentDate.diff(birthDate, 'years').years;
     } else {
-        // Direct Age method
+        // Age method
         const ageInput = document.getElementById('ageInput').value;
         if (ageInput === '') {
             alert('Please enter an age');
@@ -221,9 +223,9 @@ function addDataPoint() {
 
     const roundedAge = Math.round(age);
     
-    // Update the existing chartData
+    // Update the chart with the new patient data point
     chartData.setValue(roundedAge, 6, inputValue);
-    chartData.setValue(roundedAge, 7, 'point {size: 15; shape-type: star; fill-color: red;}');
+    chartData.setValue(roundedAge, 7, 'point {size: 15; shape-type: cross; fill-color: blue; stroke-color: blue;}');
     
     // Redraw the chart with the updated data
     chartInstance.draw(chartData, chartOptions);
