@@ -55,7 +55,9 @@ h1 {
 .radio-container {
     display: flex;
     flex-direction: column; /* Stacks radio buttons vertically */
-    justify-content: center; /* Ensures vertical alignment */
+    justify-content: flex-start;
+	align-items: flex-start;
+	text-align: left;	
 }
 
 .input-method-group .radio-container label {
