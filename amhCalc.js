@@ -147,11 +147,11 @@ function initializeChart() {
                 alignment: 'center'
             },
             series: {
-                0: { color: 'red' },
-                1: { color: 'orange' },
-                2: { color: 'black' },
-                3: { color: 'green' },
-                4: { color: 'darkgreen' },
+                0: { color: 'red', opacity: 0.5 },
+                1: { color: 'orange', opacity: 0.5 },
+                2: { color: 'black', opacity: 0.5 },
+                3: { color: 'green', opacity: 0.5 },
+                4: { color: 'darkgreen', opacity: 0.5 },
                 6: { type: 'scatter' }
             },
             trendlines: {
@@ -161,7 +161,7 @@ function initializeChart() {
                 3: { type: 'polynomial', degree: 5, color: 'green', opacity: 0.5 },
                 4: { type: 'polynomial', degree: 5, color: 'darkgreen', opacity: 0.5 }
             },
-            hAxis: { title: 'Age', minValue: 0, maxValue: 50 },
+            hAxis: { title: 'Age', minValue: 0, maxValue: 45, gridlines: { count: 46 } },
             vAxis: { title: 'AMH Level (pmol/L)' }
         };
 
