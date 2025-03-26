@@ -147,11 +147,11 @@ function initializeChart() {
                 alignment: 'center'
             },
             series: {
-                0: { color: 'red', opacity: 0.5 },
-                1: { color: 'orange', opacity: 0.5 },
-                2: { color: 'black', opacity: 0.5 },
-                3: { color: 'green', opacity: 0.5 },
-                4: { color: 'darkgreen', opacity: 0.5 },
+                0: { color: 'rgba(255, 0, 0, 0.5)' },
+                1: { color: 'rgba(255, 165, 0, 0.5)' },
+                2: { color: 'rgba(0, 0, 0, 0.5)' },
+                3: { color: 'rgba(0, 128, 0, 0.5)' },
+                4: { color: 'rgba(0, 100, 0, 0.5)' },
                 6: { type: 'scatter' }
             },
             trendlines: {
