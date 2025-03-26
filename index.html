@@ -8,23 +8,25 @@
     <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
 </head>
 <body>
-    <h1>AMH Calculator</h1>
+    <img src="header.png" alt="Header Image" id="headerImage">
     <div id="inputForm">
-        <div class="input-method-group radio-container">
-            <label>
-                <input type="radio" name="inputMethod" value="date"> Date of Birth
-            </label>
-            <label>
-                <input type="radio" name="inputMethod" value="age" checked> Age
-            </label>
-        </div>
-        <div id="birthDateGroup" class="form-group">
-            <label for="birthDate" id="birthDateLabel">Date of Birth:</label>
-            <input type="date" id="birthDate" max="" style="display: none;" />
-        </div>
-        <div id="ageInputGroup" class="form-group">
-            <label for="ageInput">Age:</label>
-            <input type="number" id="ageInput" step="0.1" min="0" max="50" placeholder="Enter Age">
+        <div class="form-group input-method-group">
+            <div id="birthDateGroup">
+                <label for="birthDate" id="birthDateLabel">Date of Birth:</label>
+                <input type="date" id="birthDate" max="">
+            </div>
+            <div id="ageInputGroup">
+                <label for="ageInput">Age:</label>
+                <input type="number" id="ageInput" step="0.1" min="0" max="50" placeholder="Enter Age">
+            </div>
+            <div class="radio-container">
+                <label>
+                    <input type="radio" name="inputMethod" value="date"> Date of Birth
+                </label>
+                <label>
+                    <input type="radio" name="inputMethod" value="age" checked> Age
+                </label>
+            </div>
         </div>
         <div class="form-group amh-input-group">
             <label for="valueInput">AMH Level:</label>

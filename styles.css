@@ -10,6 +10,18 @@ h1 {
     color: #333;
 }
 
+#headerImage {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+}
+
+#inputForm {
+    max-width: 450px;
+    margin: 0 auto;
+}
+
 .form-group {
     margin-bottom: 10px;
 }
@@ -24,6 +36,16 @@ h1 {
     padding: 5px;
     box-sizing: border-box;
     height: 30px;
+}
+
+.input-method-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Adds spacing between sections */
+}
+
+.radio-container {
+    text-align: right; /* Moves radio buttons to the right */
 }
 
 /* Input method radio buttons */
@@ -69,7 +91,7 @@ h1 {
     width: auto;
 }
 
-/* Center the chart */
+
 #chart-container {
     display: flex;
     justify-content: center;
@@ -95,7 +117,6 @@ button:hover {
     background-color: #d8bfd8;
 }
 
-/* Ensure age input group is displayed correctly */
 #ageInputGroup {
     display: block;
 }
