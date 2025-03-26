@@ -24,7 +24,7 @@ h1 {
 
 #birthDate, #ageInput, #valueInput {
     width: 250px; /* Fixed width for inputs */
-    height: 30px; /* Matches the existing input height */
+    height: 40px; /* Matches the existing input height */
     box-sizing: border-box; /* Ensures padding doesn't affect width/height */
 }
 
@@ -79,7 +79,6 @@ h1 {
 .amh-input-group .input-with-units input {
     flex-grow: 0;
 	width: 250px;
-	box-sizing: border-box;
 }
 
 .amh-units {
@@ -93,7 +92,7 @@ h1 {
 }
 
 .amh-units input {
-    margin-right: 5px;
+    flex-grow: 0;
     width: auto;
 }
 
