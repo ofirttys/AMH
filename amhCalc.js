@@ -114,9 +114,9 @@ function initializeChart() {
         chartData.addColumn('number', 'Patient');
         chartData.addColumn({type: 'string', role: 'style'});
 
-        // Populate data with 0-45 ages and add percentile data
+        // Populate data with 0-50 ages and add percentile data
         const rows = [];
-        for (let age = 0; age <= 45; age++) {
+        for (let age = 0; age <= 50; age++) {
             const row = [
                 age,
                 percentileData['10%'][age] || null,
@@ -147,31 +147,22 @@ function initializeChart() {
                 alignment: 'center'
             },
             series: {
-                0: { color: 'red', opacity: 0.5 },
-                1: { color: 'orange', opacity: 0.5 },
-                2: { color: 'black', opacity: 0.5 },
-                3: { color: 'green', opacity: 0.5 },
-                4: { color: 'darkgreen', opacity: 0.5 },
-                6: { type: 'scatter', pointShape: 'cross', pointSize: 15, color: 'blue' }
+                0: { color: 'red' },
+                1: { color: 'orange' },
+                2: { color: 'black' },
+                3: { color: 'green' },
+                4: { color: 'darkgreen' },
+                6: { type: 'scatter' }
             },
             trendlines: {
-                0: { type: 'polynomial', degree: 5, color: 'red' },
-                1: { type: 'polynomial', degree: 5, color: 'orange' },
-                2: { type: 'polynomial', degree: 5, color: 'black' },
-                3: { type: 'polynomial', degree: 5, color: 'green' },
-                4: { type: 'polynomial', degree: 5, color: 'darkgreen' }
+                0: { type: 'polynomial', degree: 5, color: 'red', opacity: 0.5 },
+                1: { type: 'polynomial', degree: 5, color: 'orange', opacity: 0.5 },
+                2: { type: 'polynomial', degree: 5, color: 'black', opacity: 0.5 },
+                3: { type: 'polynomial', degree: 5, color: 'green', opacity: 0.5 },
+                4: { type: 'polynomial', degree: 5, color: 'darkgreen', opacity: 0.5 }
             },
-            hAxis: { 
-                title: 'Age', 
-                minValue: 0, 
-                maxValue: 45,
-                gridlines: { count: 46 }
-            },
-            vAxis: { 
-                title: 'AMH Level (pmol/L)', 
-                minValue: 0,
-                gridlines: { interval: 5 }
-            }
+            hAxis: { title: 'Age', minValue: 0, maxValue: 50 },
+            vAxis: { title: 'AMH Level (pmol/L)' }
         };
 
         chartInstance = new google.visualization.LineChart(document.getElementById('chart_div'));
@@ -243,7 +234,7 @@ function addDataPoint() {
     
     // Update the chart with the new patient data point
     chartData.setValue(roundedAge, 6, inputValue);
-    chartData.setValue(roundedAge, 7, 'point {shape-type: cross; size: 15; fill-color: blue; stroke-color: blue;}');
+    chartData.setValue(roundedAge, 7, 'point {size: 15; shape-type: cross; fill-color: blue; stroke-color: blue;}');
     
     // Update the last patient point age
     lastPatientPointAge = roundedAge;
