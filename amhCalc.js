@@ -9,6 +9,11 @@ document.querySelectorAll('input[name="inputMethod"]').forEach(radio => {
         document.getElementById('ageInputGroup').style.display = 
             this.value === 'age' ? 'block' : 'none';
     });
+
+    // Trigger initial display state
+    if (radio.checked) {
+        radio.dispatchEvent(new Event('change'));
+    }
 });
 
 // Percentile data file paths

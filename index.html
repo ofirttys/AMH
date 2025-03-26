@@ -10,31 +10,45 @@
 <body>
     <h1>AMH Calculator</h1>
     <div id="inputForm">
-        <div class="form-group">
-            <label>Input Method:</label>
-            <label>
-                <input type="radio" name="inputMethod" value="date" checked> Date of Birth
-            </label>
-            <label>
-                <input type="radio" name="inputMethod" value="age"> Direct Age
-            </label>
+        <div class="form-group input-method-group">
+            <label>Input Method</label>
+            <div class="radio-container">
+                <label>
+                    <input type="radio" name="inputMethod" value="date"> Date of Birth
+                </label>
+                <label>
+                    <input type="radio" name="inputMethod" value="age" checked> Direct Age
+                </label>
+            </div>
         </div>
         <div class="form-group">
             <label for="birthDate">Date of Birth:</label>
             <input type="date" id="birthDate" max="" />
         </div>
-        <div id="ageInputGroup" style="display:none;" class="form-group">
+        <div id="ageInputGroup" class="form-group">
             <label for="ageInput">Age:</label>
             <input type="number" id="ageInput" step="0.1" min="0" max="50" placeholder="Enter Age">
         </div>
-        <div class="form-group">
+        <div class="form-group amh-input-group">
             <label for="valueInput">AMH Level:</label>
-            <input type="number" id="valueInput" step="0.1" placeholder="Enter AMH Level (pmol/L)">
+            <div class="input-with-units">
+                <input type="number" id="valueInput" step="0.1" placeholder="Enter AMH Level">
+                <div class="amh-units">
+                    <label>
+                        <input type="radio" name="amhUnits" value="pmol/L" checked> pmol/L
+                    </label>
+                    <label>
+                        <input type="radio" name="amhUnits" value="ng/ml"> ng/ml
+                    </label>
+                </div>
+            </div>
         </div>
         <button onclick="addDataPoint()">Calculate</button>
     </div>
 
-    <div id="chart_div" style="width: 900px; height: 500px;"></div>
+    <div id="chart-container">
+        <div id="chart_div"></div>
+    </div>
 
     <script src="amhCalc.js"></script>
 </body>

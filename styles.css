@@ -25,6 +25,61 @@ h1 {
     box-sizing: border-box;
 }
 
+/* New styles for input method radio buttons */
+.input-method-group .radio-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+.input-method-group .radio-container label {
+    display: flex;
+    align-items: center;
+}
+
+.input-method-group .radio-container input {
+    margin-right: 5px;
+    width: auto;
+}
+
+/* Styles for AMH input with units */
+.amh-input-group .input-with-units {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.amh-input-group .input-with-units input {
+    flex-grow: 1;
+}
+
+.amh-units {
+    display: flex;
+    gap: 10px;
+}
+
+.amh-units label {
+    display: flex;
+    align-items: center;
+}
+
+.amh-units input {
+    margin-right: 5px;
+    width: auto;
+}
+
+/* Center the chart */
+#chart-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#chart_div {
+    width: 900px;
+    height: 500px;
+}
+
 button {
     width: 100%;
     padding: 10px;
@@ -36,4 +91,9 @@ button {
 
 button:hover {
     background-color: #45a049;
+}
+
+/* Ensure age input group is displayed correctly */
+#ageInputGroup {
+    display: block;
 }
