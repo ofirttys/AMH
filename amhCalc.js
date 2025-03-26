@@ -25,6 +25,8 @@ google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(initializeChart);
 
 let chartInstance = null;
+let chartData = null;
+let chartOptions = null;
 let percentileData = {};
 
 function interpolateData(data, minAge = 0, maxAge = 50) {
@@ -100,15 +102,15 @@ function initializeChart() {
     loadPercentileData().then((dataLoaded) => {
         if (!dataLoaded) return;
 
-        const data = new google.visualization.DataTable();
-        data.addColumn('number', 'Age');
-        data.addColumn('number', '10% Percentile');
-        data.addColumn('number', '25% Percentile');
-        data.addColumn('number', '50% Percentile');
-        data.addColumn('number', '75% Percentile');
-        data.addColumn('number', '90% Percentile');
-        data.addColumn('number', 'Patient');
-        data.addColumn({type: 'string', role: 'style'});
+        chartData = new google.visualization.DataTable();
+        chartData.addColumn('number', 'Age');
+        chartData.addColumn('number', '10% Percentile');
+        chartData.addColumn('number', '25% Percentile');
+        chartData.addColumn('number', '50% Percentile');
+        chartData.addColumn('number', '75% Percentile');
+        chartData.addColumn('number', '90% Percentile');
+        chartData.addColumn('number', 'Patient');
+        chartData.addColumn({type: 'string', role: 'style'});
 
         // Populate data with 0-50 ages and add percentile data
         const rows = [];
@@ -125,9 +127,9 @@ function initializeChart() {
             ];
             rows.push(row);
         }
-        data.addRows(rows);
+        chartData.addRows(rows);
 
-        const options = {
+        chartOptions = {
             title: 'AMH Levels by Age',
             titleTextStyle: {
                 fontSize: 18,
@@ -162,13 +164,13 @@ function initializeChart() {
         };
 
         chartInstance = new google.visualization.LineChart(document.getElementById('chart_div'));
-        chartInstance.draw(data, options);
+        chartInstance.draw(chartData, chartOptions);
     });
 }
 
 function addDataPoint() {
     // Ensure chart is initialized
-    if (!chartInstance) {
+    if (!chartInstance || !chartData) {
         alert('Chart is not yet initialized. Please wait and try again.');
         return;
     }
@@ -217,13 +219,14 @@ function addDataPoint() {
         }
     }
 
-    // Create a new data table from the current chart
-    const data = new google.visualization.DataTable(chartInstance.getDataTable());
     const roundedAge = Math.round(age);
     
-    // Set the patient point at the specified age
-    data.setValue(roundedAge, 6, inputValue);
+    // Create a copy of the existing data
+    const newData = new google.visualization.DataTable(chartData);
     
-    // Update the chart with the new data
-    chartInstance.draw(data, chartInstance.getOptions());
+    // Set the patient point at the specified age
+    newData.setValue(roundedAge, 6, inputValue);
+    
+    // Redraw the chart with the updated data
+    chartInstance.draw(newData, chartOptions);
 }
