@@ -155,11 +155,11 @@ function initializeChart() {
                 6: { type: 'scatter' }
             },
             trendlines: {
-                0: { type: 'polynomial', degree: 5, color: 'red', opacity: 0.5 },
-                1: { type: 'polynomial', degree: 5, color: 'orange', opacity: 0.5 },
-                2: { type: 'polynomial', degree: 5, color: 'black', opacity: 0.5 },
-                3: { type: 'polynomial', degree: 5, color: 'green', opacity: 0.5 },
-                4: { type: 'polynomial', degree: 5, color: 'darkgreen', opacity: 0.5 }
+                0: { type: 'polynomial', degree: 5, color: 'red' },
+                1: { type: 'polynomial', degree: 5, color: 'orange' },
+                2: { type: 'polynomial', degree: 5, color: 'black' },
+                3: { type: 'polynomial', degree: 5, color: 'green' },
+                4: { type: 'polynomial', degree: 5, color: 'darkgreen' }
             },
             hAxis: { title: 'Age', minValue: 0, maxValue: 45, gridlines: { count: 46 } },
             vAxis: { title: 'AMH Level (pmol/L)' }
