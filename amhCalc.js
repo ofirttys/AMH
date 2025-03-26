@@ -147,11 +147,11 @@ function initializeChart() {
                 alignment: 'center'
             },
             series: {
-                0: { color: '#80FF0000' },
-                1: { color: '#80FFA500' },
-                2: { color: '#80000000' },
-                3: { color: '#40008000' },
-                4: { color: '#20006400' },
+                0: { areaOpacity: 0.5, color: 'red' },
+                1: { areaOpacity: 0.5, color: 'orange' },
+                2: { color: 'black' },
+                3: { strokeOpacity: 0.5, color: 'green' },
+                4: { strokeOpacity: 0.5, color: 'darkgreen' },
                 6: { type: 'scatter' }
             },
             trendlines: {
