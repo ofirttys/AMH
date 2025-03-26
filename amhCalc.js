@@ -169,7 +169,6 @@ function initializeChart() {
             },
             vAxis: { 
                 title: 'AMH Level (pmol/L)', 
-                maxValue: 100,
                 minValue: 0,
                 gridlines: { interval: 5 }
             }
