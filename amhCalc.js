@@ -88,7 +88,7 @@ async function loadPercentileData() {
 function initializeChart() {
     // Set direct age input as default
     document.querySelector('input[name="inputMethod"][value="age"]').checked = true;
-    document.getElementById('birthDate').parentElement.style.display = 'none';
+    document.getElementById('birthDate').style.display = 'none';
     document.getElementById('ageInputGroup').style.display = 'block';
 
     // Load data first
@@ -103,20 +103,19 @@ function initializeChart() {
         chartData.addColumn('number', '75% Percentile');
         chartData.addColumn('number', '90% Percentile');
         chartData.addColumn('number', 'Patient');
-        chartData.addColumn({type: 'string', role: 'style'});
+        chartData.addColumn('string', 'Patient Point Style');
 
         // Populate data with 0-50 ages and add percentile data
         const rows = [];
         for (let age = 0; age <= 50; age++) {
             const row = [
                 age,
-                percentileData['10%'][age],
-                percentileData['25%'][age],
-                percentileData['50%'][age],
-                percentileData['75%'][age],
-                percentileData['90%'][age],
-                null,
-                'point {size: 10; shape-type: star; fill-color: blue;}'
+                percentileData['10%'][age] || null,
+                percentileData['25%'][age] || null,
+                percentileData['50%'][age] || null,
+                percentileData['75%'][age] || null,
+                percentileData['90%'][age] || null,
+                null, // Patient data point
             ];
             rows.push(row);
         }
@@ -129,9 +128,9 @@ function initializeChart() {
                 bold: true,
                 alignment: 'center'
             },
-            width: 1800,  // 2x larger
-            height: 1000, // 2x larger
-            curveType: 'function', // creates smooth lines
+            width: '100%',
+            height: 500,
+            curveType: 'function',
             legend: { 
                 position: 'bottom', 
                 maxLines: 2,
@@ -143,7 +142,7 @@ function initializeChart() {
                 2: { color: 'black' },
                 3: { color: 'green' },
                 4: { color: 'darkgreen' },
-                5: { type: 'scatter' }
+                6: { type: 'scatter' }
             },
             trendlines: {
                 0: { type: 'polynomial', degree: 5, color: 'red', opacity: 0.5 },
@@ -214,10 +213,8 @@ function addDataPoint() {
 
     const roundedAge = Math.round(age);
     
-    // Create a new DataTable to avoid modifying the original
     const newData = new google.visualization.DataTable();
     
-    // Copy columns from the original chart data
     for (let i = 0; i < chartData.getNumberOfColumns(); i++) {
         newData.addColumn(
             chartData.getColumnType(i), 
@@ -225,7 +222,6 @@ function addDataPoint() {
         );
     }
     
-    // Copy all rows from the original chart data
     for (let i = 0; i < chartData.getNumberOfRows(); i++) {
         const row = [];
         for (let j = 0; j < chartData.getNumberOfColumns(); j++) {
