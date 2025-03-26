@@ -170,6 +170,9 @@ function initializeChart() {
     });
 }
 
+// Add this global variable at the top of the file
+let lastPatientPointAge = null;
+
 function addDataPoint() {
     // Ensure chart is initialized
     if (!chartInstance || !chartData) {
@@ -223,9 +226,18 @@ function addDataPoint() {
 
     const roundedAge = Math.round(age);
     
+    // Remove the last patient point if it exists
+    if (lastPatientPointAge !== null) {
+        chartData.setValue(lastPatientPointAge, 6, null);
+        chartData.setValue(lastPatientPointAge, 7, null);
+    }
+    
     // Update the chart with the new patient data point
     chartData.setValue(roundedAge, 6, inputValue);
     chartData.setValue(roundedAge, 7, 'point {size: 15; shape-type: cross; fill-color: blue; stroke-color: blue;}');
+    
+    // Update the last patient point age
+    lastPatientPointAge = roundedAge;
     
     // Redraw the chart with the updated data
     chartInstance.draw(chartData, chartOptions);
