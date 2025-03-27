@@ -1,5 +1,3 @@
-console.log("amhCalc.js script loaded");
-
 // Set max date to today
 document.getElementById('birthDate').max = luxon.DateTime.now().toISODate();
 
@@ -94,8 +92,6 @@ async function loadPercentileData() {
 }
 
 function initializeChart() {
-	console.log("initializeChart function called");
-	
     document.querySelector('input[name="inputMethod"][value="age"]').checked = true;
     document.getElementById('birthDate').style.display = 'none';
     document.getElementById('birthDateGroup').style.display = 'none';
@@ -142,7 +138,6 @@ function initializeChart() {
             width: '100%',
             height: 500,
             curveType: 'function',
-            // Hide the legend
             legend: { position: 'none' },
             series: {
                 0: { color: 'transparent' },
@@ -160,67 +155,32 @@ function initializeChart() {
                 4: { type: 'polynomial', degree: 5, color: 'darkgreen' }
             },
             hAxis: { title: 'Age', minValue: 0, maxValue: 44, gridlines: { count: 45 }, viewWindow: { max: 44 } },
-            vAxis: { title: 'AMH Level (pmol/L)', minValue: 0, maxValue: 100, gridlines: { count: 50 }, viewWindow: { min: 0 } }
+            vAxis: { 
+                title: 'AMH Level (pmol/L)', 
+                minValue: 0, 
+                maxValue: 100, 
+                gridlines: { count: 50 },
+                viewWindow: {
+                    min: 0
+                }
+            },
+            annotations: {
+                textStyle: {
+                    fontSize: 12,
+                    bold: true
+                },
+                datum: [
+                    { series: 0, x: 40, y: percentileData['10%'][40], text: '10% Percentile', style: 'red' },
+                    { series: 1, x: 40, y: percentileData['25%'][40], text: '25% Percentile', style: 'orange' },
+                    { series: 2, x: 40, y: percentileData['50%'][40], text: '50% Percentile', style: 'black' },
+                    { series: 3, x: 40, y: percentileData['75%'][40], text: '75% Percentile', style: 'green' },
+                    { series: 4, x: 40, y: percentileData['90%'][40], text: '90% Percentile', style: 'darkgreen' }
+                ]
+            }
         };
 
-        // Draw the chart first
         chartInstance = new google.visualization.LineChart(document.getElementById('chart_div'));
-		console.log("Chart instance created:", chartInstance);
         chartInstance.draw(chartData, chartOptions);
-		console.log("Chart drawn");
-
-        google.visualization.events.addListener(chartInstance, 'ready', function () {
-			console.log('Chart ready event triggered');
-            const chartContainer = document.getElementById('chart_div');
-			console.log('Chart container:', chartContainer);
-			
-            if (!chartContainer) {
-                console.error("Chart container not found!");
-                return;
-            }
-            const chartContainerRect = chartContainer.getBoundingClientRect();
-			console.log("Chart container rectangle:", chartContainerRect);
-    
-            // Create SVG overlay
-            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-            svg.setAttribute('width', chartContainerRect.width);
-            svg.setAttribute('height', chartContainerRect.height);
-            svg.style.position = 'absolute';
-            svg.style.top = '0';
-            svg.style.left = '0';
-            svg.style.zIndex = '10'; // Ensure it's above the chart
-			svg.style.backgroundColor = 'rgba(255,0,0,0.1)';
-            svg.style.pointerEvents = 'none';
-
-            // Percentile labels and their colors
-            const labels = [
-                { text: '10% Percentile', color: 'red' },
-                { text: '25% Percentile', color: 'orange' },
-                { text: '50% Percentile', color: 'black' },
-                { text: '75% Percentile', color: 'green' },
-                { text: '90% Percentile', color: 'darkgreen' }
-            ];
-
-            // Create text elements for each label
-            labels.forEach((label, index) => {
-                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                text.setAttribute('x', chartContainerRect.width * 0.95); // Adjust x position
-                text.setAttribute('y', `${10 + index * 30}`); // Use pixel value
-                text.setAttribute('fill', label.color);
-                text.setAttribute('text-anchor', 'end');
-                text.setAttribute('font-size', '14');
-                text.setAttribute('font-weight', 'bold');
-                text.textContent = label.text;
-                svg.appendChild(text);
-            });
-
-            // Append SVG to chart container
-            chartContainer.style.position = 'relative';
-			console.log('SVG created:', svg);
-            chartContainer.appendChild(svg);
-			console.log('SVG appended to container');
-        });
-
     });
 }
 
