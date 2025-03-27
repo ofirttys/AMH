@@ -157,7 +157,7 @@ function initializeChart() {
             vAxis: { 
                 title: 'AMH Level (pmol/L)', 
 				titleTextStyle: {
-					baseline: -20
+					baseline: -50
                 },
                 minValue: 0, 
                 maxValue: 100, 
