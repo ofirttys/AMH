@@ -159,6 +159,45 @@ function initializeChart() {
                 viewWindow: {
                     min: 0
                 }
+            },
+            annotations: {
+                textStyle: {
+                    fontSize: 12,
+                    bold: true
+                },
+                alwaysOutside: true,
+                datum: [
+                    { 
+                        series: 0, 
+                        x: 40, 
+                        y: percentileData['10%'](40),
+                        text: '10% Percentile' 
+                    },
+                    { 
+                        series: 1, 
+                        x: 40, 
+                        y: percentileData['25%'](40),
+                        text: '25% Percentile' 
+                    },
+                    { 
+                        series: 2, 
+                        x: 40, 
+                        y: percentileData['50%'](40),
+                        text: '50% Percentile' 
+                    },
+                    { 
+                        series: 3, 
+                        x: 40, 
+                        y: percentileData['75%'](40),
+                        text: '75% Percentile' 
+                    },
+                    { 
+                        series: 4, 
+                        x: 40, 
+                        y: percentileData['90%'](40),
+                        text: '90% Percentile' 
+                    }
+                ]
             }
         };
 
