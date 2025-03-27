@@ -146,6 +146,9 @@ function initializeChart() {
             },
             hAxis: {
                 title: 'Age',
+				titleTextStyle: {
+					baseline: -20
+                },
                 minValue: 0,
                 maxValue: 50,
                 gridlines: { count: 45 },
@@ -153,6 +156,9 @@ function initializeChart() {
             },
             vAxis: { 
                 title: 'AMH Level (pmol/L)', 
+				titleTextStyle: {
+					baseline: -20
+                },
                 minValue: 0, 
                 maxValue: 100, 
                 gridlines: { count: 50 },
