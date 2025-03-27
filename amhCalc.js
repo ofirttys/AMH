@@ -150,7 +150,15 @@ function initializeChart() {
                 3: { type: 'polynomial', degree: 5, color: '#008000' },
                 4: { type: 'polynomial', degree: 5, color: '#006400' }
             },
-            hAxis: { title: 'Age', minValue: 0, maxValue: 50, gridlines: { count: 51 } },
+            hAxis: {
+                title: 'Age',
+                minValue: 0,
+                maxValue: 50,
+                gridlines: { count: 51 }
+                viewWindow: {
+                    max: 44
+                }
+            },
             vAxis: { 
                 title: 'AMH Level (pmol/L)', 
                 minValue: 0, 
@@ -171,14 +179,9 @@ function initializeChart() {
                 stem: {
                     color: 'gray',
                     length: 10
-                },
-                domain: {
-                    stem: {
-                        length: 5,
-                        color: 'gray'
-                    }
                 }
             }
+
         };
 
         // Add annotations after the chart is drawn
@@ -187,23 +190,33 @@ function initializeChart() {
             const colors = ['#FF0000', '#FFA500', '#000000', '#008000', '#006400'];
             const annotationPoint = 40; // Age at which to add annotations
 
+            // Clone the existing options to modify
+            let modifiedOptions = { ...chartOptions };
+
+            // Ensure annotations array exists
+            if (!modifiedOptions.annotations) {
+                modifiedOptions.annotations = [];
+            }
+
+            // Create annotations for each percentile
             percentileLabels.forEach((label, index) => {
                 const y = percentileData[label](annotationPoint);
-                
-                // Create an annotation
-                const annotation = {
+
+                // Add the annotation
+                if (!modifiedOptions.annotations) {
+                    modifiedOptions.annotations = [];
+                }
+
+                modifiedOptions.annotations.push({
                     x: annotationPoint,
                     y: y,
                     text: label + ' Percentile',
-                    series: index
-                };
-
-                // Add the annotation
-                chartInstance.getOption('annotations').push(annotation);
+                    style: colors[index]
+                });
             });
 
             // Redraw the chart with annotations
-            chartInstance.draw(chartData, chartOptions);
+            chartInstance.draw(chartData, modifiedOptions);
         }
 
         chartInstance = new google.visualization.LineChart(document.getElementById('chart_div'));
