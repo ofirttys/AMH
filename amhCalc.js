@@ -178,7 +178,7 @@ function initializeChart() {
             // Add all percentile labels
             addPercentileLabel(chartElement, '90%', '#006400', 0.65, 0.5);
             addPercentileLabel(chartElement, '75%', '#008000', 0.625, 0.55);
-            addPercentileLabel(chartElement, '50%', '#000000', 0.6, 0.65);
+            addPercentileLabel(chartElement, '50%', '#000000', 0.6, 0.625);
             addPercentileLabel(chartElement, '25%', '#FFA500', 0.575, 0.675);
             addPercentileLabel(chartElement, '10%', '#FF0000', 0.55, 0.71);
         }, 100);
@@ -303,7 +303,7 @@ function addDataPoint() {
         // Add all percentile labels
         addPercentileLabel(chartElement, '90%', '#006400', 0.65, 0.5);
         addPercentileLabel(chartElement, '75%', '#008000', 0.625, 0.55);
-        addPercentileLabel(chartElement, '50%', '#000000', 0.6, 0.65);
+        addPercentileLabel(chartElement, '50%', '#000000', 0.6, 0.625);
         addPercentileLabel(chartElement, '25%', '#FFA500', 0.575, 0.675);
         addPercentileLabel(chartElement, '10%', '#FF0000', 0.55, 0.71);
     }, 100);
