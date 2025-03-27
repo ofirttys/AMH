@@ -99,7 +99,9 @@ function initializeChart() {
         chartData.addColumn('number', '75% Percentile');
         chartData.addColumn('number', '90% Percentile');
         chartData.addColumn('number', 'Patient');
-        chartData.addColumn({ type: 'string', role: 'annotation' });
+        
+        // Remove annotation column since it doesn't work
+        // chartData.addColumn({ type: 'string', role: 'annotation' });
 
         const rows = [];
         for (let age = 0; age <= 50; age += 0.5) {
@@ -110,8 +112,8 @@ function initializeChart() {
                 percentileData['50%'](age),
                 percentileData['75%'](age),
                 percentileData['90%'](age),
-                null,
                 null
+                // Removed null annotation
             ];
 
             rows.push(row);
@@ -129,13 +131,25 @@ function initializeChart() {
             height: 500,
             curveType: 'function',
             legend: { position: 'none' },
+            // Disable tooltips
+            tooltip: { trigger: 'none' },
             series: {
                 0: { color: 'transparent' },
                 1: { color: 'transparent' },
                 2: { color: 'transparent' },
                 3: { color: 'transparent' },
                 4: { color: 'transparent' },
-                6: { type: 'scatter' }
+                // Change patient point to star
+                5: { 
+                    type: 'scatter',
+                    pointShape: { 
+                        type: 'star', 
+                        sides: 5, 
+                        dent: 0.5
+                    },
+                    pointSize: 15,
+                    color: '#703593'
+                }
             },
             trendlines: {
                 0: { type: 'polynomial', degree: 5, color: '#FF0000' },
@@ -146,9 +160,6 @@ function initializeChart() {
             },
             hAxis: {
                 title: 'Age',
-				titleTextStyle: {
-					baseline: -20
-                },
                 minValue: 0,
                 maxValue: 50,
                 gridlines: { count: 45 },
@@ -156,25 +167,74 @@ function initializeChart() {
             },
             vAxis: { 
                 title: 'AMH Level (pmol/L)', 
-				titleTextStyle: {
-					baseline: -50
-                },
                 minValue: 0, 
                 maxValue: 100, 
                 gridlines: { count: 50 },
                 viewWindow: { min: 0 }
             },
+            // Remove annotations config since it doesn't work
             annotations: {
-                textStyle: {
-                    fontSize: 12,
-                    bold: true,
-                    color: 'black'
+                // Add "90%" text overlay
+                datum: {
+                    stem: {
+                        color: 'transparent'
+                    },
+                    textStyle: {
+                        fontSize: 14,
+                        bold: true,
+                        color: '#006400' // Same color as 90% trendline
+                    }
                 }
             }
         };
 
         chartInstance = new google.visualization.LineChart(document.getElementById('chart_div'));
         chartInstance.draw(chartData, chartOptions);
+        
+        // Add "90%" text overlay after chart is drawn
+        // We'll add it directly to the chart using the 90% data point at age 30
+        // The 90% percentile is the 5th data column (index 4)
+        const age = 30;
+        const ninetieth_percentile_value = percentileData['90%'](age);
+        
+        // Add an annotation data point for the 90% label
+        const dataTable = new google.visualization.DataTable();
+        dataTable.addColumn('number', 'x');
+        dataTable.addColumn('number', 'y');
+        dataTable.addColumn({type: 'string', role: 'annotation'});
+        dataTable.addRow([age, ninetieth_percentile_value, '90%']);
+        
+        const annotationOptions = {
+            width: '100%',
+            height: 500,
+            legend: { position: 'none' },
+            series: {
+                0: { 
+                    color: 'transparent',
+                    enableInteractivity: false,
+                    visibleInLegend: false
+                }
+            },
+            hAxis: { viewWindow: { min: 0, max: 44 } },
+            vAxis: { viewWindow: { min: 0, max: 100 } },
+            annotations: {
+                stem: {
+                    color: 'transparent'
+                },
+                textStyle: {
+                    fontSize: 14,
+                    bold: true,
+                    color: '#006400'
+                }
+            },
+            tooltip: { trigger: 'none' }
+        };
+        
+        // Draw the annotation over the main chart
+        const annotationChart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        google.visualization.events.addListener(chartInstance, 'ready', function() {
+            annotationChart.draw(dataTable, annotationOptions);
+        });
     });
 }
 
@@ -231,6 +291,7 @@ function addDataPoint() {
         }
     }
 
+    // Updated to match columns without annotation
     chartData.addRow([
         Number(age.toFixed(3)),
         percentileData['10%'](age),
@@ -238,11 +299,53 @@ function addDataPoint() {
         percentileData['50%'](age),
         percentileData['75%'](age),
         percentileData['90%'](age),
-        inputValue,
-        null
+        inputValue
+        // Removed annotation
     ]);
 
     lastPatientPointAge = age;
 
     chartInstance.draw(chartData, chartOptions);
+    
+    // Redraw the 90% label after updating the chart
+    const age30 = 30;
+    const ninetieth_percentile_value = percentileData['90%'](age30);
+    
+    const dataTable = new google.visualization.DataTable();
+    dataTable.addColumn('number', 'x');
+    dataTable.addColumn('number', 'y');
+    dataTable.addColumn({type: 'string', role: 'annotation'});
+    dataTable.addRow([age30, ninetieth_percentile_value, '90%']);
+    
+    const annotationOptions = {
+        width: '100%',
+        height: 500,
+        legend: { position: 'none' },
+        series: {
+            0: { 
+                color: 'transparent',
+                enableInteractivity: false,
+                visibleInLegend: false
+            }
+        },
+        hAxis: { viewWindow: { min: 0, max: 44 } },
+        vAxis: { viewWindow: { min: 0, max: 100 } },
+        annotations: {
+            stem: {
+                color: 'transparent'
+            },
+            textStyle: {
+                fontSize: 14,
+                bold: true,
+                color: '#006400'
+            }
+        },
+        tooltip: { trigger: 'none' }
+    };
+    
+    // Draw the annotation over the main chart
+    const annotationChart = new google.visualization.LineChart(document.getElementById('chart_div'));
+    setTimeout(() => {
+        annotationChart.draw(dataTable, annotationOptions);
+    }, 100);
 }
