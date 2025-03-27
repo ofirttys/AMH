@@ -124,14 +124,20 @@ function initializeChart() {
             legend: { position: 'none' },
             // Configure tooltip - we'll make it work only for the patient point
             tooltip: { 
-                trigger: 'focus'
+                trigger: 'none'
+            },
+            chartArea: {
+                left: 50,
+                top: 20,
+                width: '85%',
+                height: '80%'
             },
             series: {
-                0: { color: 'transparent' },
-                1: { color: 'transparent' },
-                2: { color: 'transparent' },
-                3: { color: 'transparent' },
-                4: { color: 'transparent' },
+                0: { color: 'transparent', enableInteractivity: false },
+                1: { color: 'transparent', enableInteractivity: false },
+                2: { color: 'transparent', enableInteractivity: false },
+                3: { color: 'transparent', enableInteractivity: false },
+                4: { color: 'transparent', enableInteractivity: false },
                 // Change patient point to star & enable tooltip
                 5: { 
                     type: 'scatter',
@@ -140,7 +146,7 @@ function initializeChart() {
                         sides: 5, 
                         dent: 0.5
                     },
-                    pointSize: 8,
+                    pointSize: 5,
                     color: '#703593',
                     enableInteractivity: true
                 }
@@ -288,7 +294,7 @@ function addDataPoint() {
             sides: 5, 
             dent: 0.5
         },
-        pointSize: 8,
+        pointSize: 5,
         color: '#703593',
         enableInteractivity: true
     };
