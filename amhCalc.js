@@ -111,14 +111,6 @@ function initializeChart() {
         chartData.addColumn('number', 'Patient');
         chartData.addColumn({type: 'string', role: 'style'});
 
-        const trendlineLabels = [
-            { label: '10% Percentile', color: 'red' },
-            { label: '25% Percentile', color: 'orange' },
-            { label: '50% Percentile', color: 'black' },
-            { label: '75% Percentile', color: 'green' },
-            { label: '90% Percentile', color: 'darkgreen' }
-        ];
-
         const rows = [];
         for (let age = 0; age <= 50; age++) {
             const row = [
@@ -149,58 +141,67 @@ function initializeChart() {
             // Hide the legend
             legend: { position: 'none' },
             series: {
-                0: { color: 'transparent', labelInLegend: 'Low Percentile' },
-                1: { color: 'transparent', labelInLegend: 'Lower Percentile' },
-                2: { color: 'transparent', labelInLegend: 'Medium Percentile' },
-                3: { color: 'transparent', labelInLegend: 'Higher Percentile' },
-                4: { color: 'transparent', labelInLegend: 'High Percentile' },
+                0: { color: 'transparent' },
+                1: { color: 'transparent' },
+                2: { color: 'transparent' },
+                3: { color: 'transparent' },
+                4: { color: 'transparent' },
                 6: { type: 'scatter' }
             },
             trendlines: {
-                0: { 
-                    type: 'polynomial', 
-                    degree: 5, 
-                    color: 'red',
-                    labelInLegend: '10% Percentile'
-                },
-                1: { 
-                    type: 'polynomial', 
-                    degree: 5, 
-                    color: 'orange',
-                    labelInLegend: '25% Percentile'
-                },
-                2: { 
-                    type: 'polynomial', 
-                    degree: 5, 
-                    color: 'black',
-                    labelInLegend: '50% Percentile'
-                },
-                3: { 
-                    type: 'polynomial', 
-                    degree: 5, 
-                    color: 'green',
-                    labelInLegend: '75% Percentile'
-                },
-                4: { 
-                    type: 'polynomial', 
-                    degree: 5, 
-                    color: 'darkgreen',
-                    labelInLegend: '90% Percentile'
-                }
-            },
-            annotations: {
-                alwaysOutside: true,
-                textStyle: {
-                    fontSize: 12,
-                    color: '#000'
-                }
+                0: { type: 'polynomial', degree: 5, color: 'red' },
+                1: { type: 'polynomial', degree: 5, color: 'orange' },
+                2: { type: 'polynomial', degree: 5, color: 'black' },
+                3: { type: 'polynomial', degree: 5, color: 'green' },
+                4: { type: 'polynomial', degree: 5, color: 'darkgreen' }
             },
             hAxis: { title: 'Age', minValue: 0, maxValue: 44, gridlines: { count: 44 } },
             vAxis: { title: 'AMH Level (pmol/L)', minValue: 0, maxValue: 100, gridlines: { count: 50 } }
         };
 
+        // Draw the chart first
         chartInstance = new google.visualization.LineChart(document.getElementById('chart_div'));
         chartInstance.draw(chartData, chartOptions);
+
+        // Add SVG overlay with labels
+        google.visualization.events.addListener(chartInstance, 'ready', function () {
+            const chartContainer = document.getElementById('chart_div');
+            const chartContainerRect = chartContainer.getBoundingClientRect();
+            
+            // Create SVG overlay
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('width', chartContainerRect.width);
+            svg.setAttribute('height', chartContainerRect.height);
+            svg.style.position = 'absolute';
+            svg.style.top = '0';
+            svg.style.left = '0';
+            svg.style.pointerEvents = 'none';
+
+            // Percentile labels and their colors
+            const labels = [
+                { text: '10% Percentile', color: 'red' },
+                { text: '25% Percentile', color: 'orange' },
+                { text: '50% Percentile', color: 'black' },
+                { text: '75% Percentile', color: 'green' },
+                { text: '90% Percentile', color: 'darkgreen' }
+            ];
+
+            // Create text elements for each label
+            labels.forEach((label, index) => {
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('x', '95%');
+                text.setAttribute('y', `${10 + index * 30}%`);
+                text.setAttribute('fill', label.color);
+                text.setAttribute('text-anchor', 'end');
+                text.setAttribute('font-size', '12');
+                text.textContent = label.text;
+                svg.appendChild(text);
+            });
+
+            // Append SVG to chart container
+            chartContainer.style.position = 'relative';
+            chartContainer.appendChild(svg);
+        });
     });
 }
 
