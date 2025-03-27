@@ -147,7 +147,7 @@ function initializeChart() {
                         sides: 5, 
                         dent: 0.5
                     },
-                    pointSize: 15,
+                    pointSize: 8,
                     color: '#703593'
                 }
             },
