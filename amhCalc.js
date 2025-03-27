@@ -146,7 +146,7 @@ function initializeChart() {
                         sides: 5, 
                         dent: 0.5
                     },
-                    pointSize: 5,
+                    pointSize: 8,
                     color: '#703593',
                     enableInteractivity: true
                 }
@@ -182,7 +182,7 @@ function initializeChart() {
             const chartElement = document.getElementById('chart_div');
             
             // Add all percentile labels
-            addPercentileLabel(chartElement, '90%', '#006400', 0.65, 0.4);
+            addPercentileLabel(chartElement, '90%', '#006400', 0.65, 0.415);
             addPercentileLabel(chartElement, '75%', '#008000', 0.625, 0.525);
             addPercentileLabel(chartElement, '50%', '#000000', 0.6, 0.625);
             addPercentileLabel(chartElement, '25%', '#FFA500', 0.575, 0.675);
@@ -294,7 +294,7 @@ function addDataPoint() {
             sides: 5, 
             dent: 0.5
         },
-        pointSize: 5,
+        pointSize: 8,
         color: '#703593',
         enableInteractivity: true
     };
@@ -307,7 +307,7 @@ function addDataPoint() {
         const chartElement = document.getElementById('chart_div');
         
         // Add all percentile labels
-        addPercentileLabel(chartElement, '90%', '#006400', 0.65, 0.4);
+        addPercentileLabel(chartElement, '90%', '#006400', 0.65, 0.415);
         addPercentileLabel(chartElement, '75%', '#008000', 0.625, 0.525);
         addPercentileLabel(chartElement, '50%', '#000000', 0.6, 0.625);
         addPercentileLabel(chartElement, '25%', '#FFA500', 0.575, 0.675);
