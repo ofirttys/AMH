@@ -136,12 +136,12 @@ function initializeChart() {
             curveType: 'function',
             legend: { position: 'none' },
             series: {
-                0: { color: '#FF0000' },     // 10% Percentile
-                1: { color: '#FFA500' },     // 25% Percentile
-                2: { color: '#000000' },     // 50% Percentile
-                3: { color: '#008000' },     // 75% Percentile
-                4: { color: '#006400' },     // 90% Percentile
-                6: { type: 'scatter', color: 'blue', pointSize: 15 }
+                0: { color: 'transparent' },
+                1: { color: 'transparent' },
+                2: { color: 'transparent' },
+                3: { color: 'transparent' },
+                4: { color: 'transparent' },
+                6: { type: 'scatter' }
             },
             trendlines: {
                 0: { type: 'polynomial', degree: 5, color: '#FF0000' },
@@ -163,47 +163,54 @@ function initializeChart() {
             annotations: {
                 textStyle: {
                     fontSize: 12,
-                    bold: true
+                    bold: true,
+                    color: 'black'
                 },
                 alwaysOutside: true,
-                style: 'line',
-                datum: [
-                    { 
-                        series: 0, 
-                        x: 40, 
-                        y: percentileData['10%'](40),
-                        text: '10% Percentile' 
-                    },
-                    { 
-                        series: 1, 
-                        x: 40, 
-                        y: percentileData['25%'](40),
-                        text: '25% Percentile' 
-                    },
-                    { 
-                        series: 2, 
-                        x: 40, 
-                        y: percentileData['50%'](40),
-                        text: '50% Percentile' 
-                    },
-                    { 
-                        series: 3, 
-                        x: 40, 
-                        y: percentileData['75%'](40),
-                        text: '75% Percentile' 
-                    },
-                    { 
-                        series: 4, 
-                        x: 40, 
-                        y: percentileData['90%'](40),
-                        text: '90% Percentile' 
+                highContrast: true,
+                stem: {
+                    color: 'gray',
+                    length: 10
+                },
+                domain: {
+                    stem: {
+                        length: 5,
+                        color: 'gray'
                     }
-                ]
+                }
             }
         };
 
+        // Add annotations after the chart is drawn
+        function addAnnotations() {
+            const percentileLabels = ['10%', '25%', '50%', '75%', '90%'];
+            const colors = ['#FF0000', '#FFA500', '#000000', '#008000', '#006400'];
+            const annotationPoint = 40; // Age at which to add annotations
+
+            percentileLabels.forEach((label, index) => {
+                const y = percentileData[label](annotationPoint);
+                
+                // Create an annotation
+                const annotation = {
+                    x: annotationPoint,
+                    y: y,
+                    text: label + ' Percentile',
+                    series: index
+                };
+
+                // Add the annotation
+                chartInstance.getOption('annotations').push(annotation);
+            });
+
+            // Redraw the chart with annotations
+            chartInstance.draw(chartData, chartOptions);
+        }
+
         chartInstance = new google.visualization.LineChart(document.getElementById('chart_div'));
         chartInstance.draw(chartData, chartOptions);
+        
+        // Add this listener to add annotations after initial draw
+        google.visualization.events.addListener(chartInstance, 'ready', addAnnotations);
     });
 }
 
