@@ -1,3 +1,5 @@
+console.log("amhCalc.js script loaded");
+
 // Set max date to today
 document.getElementById('birthDate').max = luxon.DateTime.now().toISODate();
 
@@ -92,6 +94,8 @@ async function loadPercentileData() {
 }
 
 function initializeChart() {
+	console.log("initializeChart function called");
+	
     document.querySelector('input[name="inputMethod"][value="age"]').checked = true;
     document.getElementById('birthDate').style.display = 'none';
     document.getElementById('birthDateGroup').style.display = 'none';
