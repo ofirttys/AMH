@@ -1,5 +1,4 @@
 // Set max date to today
-// Set max date to today
 document.getElementById('birthDate').max = luxon.DateTime.now().toISODate();
 
 // Toggle input method
@@ -112,9 +111,14 @@ function initializeChart() {
         chartData.addColumn('number', 'Patient');
         chartData.addColumn({type: 'string', role: 'style'});
 
-        // Add an annotation column for trendline labels
-        chartData.addColumn({type: 'string', role: 'annotation'});
-        chartData.addColumn({type: 'string', role: 'annotationText'});
+        // Add labels for trendlines
+        const trendlineLabels = [
+            { label: '10% Percentile', color: 'red' },
+            { label: '25% Percentile', color: 'orange' },
+            { label: '50% Percentile', color: 'black' },
+            { label: '75% Percentile', color: 'green' },
+            { label: '90% Percentile', color: 'darkgreen' }
+        ];
 
         const rows = [];
         for (let age = 0; age <= 50; age++) {
@@ -126,10 +130,20 @@ function initializeChart() {
                 percentileData['75%'][age] || null,
                 percentileData['90%'][age] || null,
                 null,
-                null,
-                age === 25 ? 'Label' : null, // Add annotation at a specific age
-                age === 25 ? 'This is a label for trendline' : null // Annotation description
+                null
             ];
+
+            // Add trendline labels at a fixed position (e.g., age 45)
+            if (age === 45) {
+                trendlineLabels.forEach((labelInfo, index) => {
+                    row.push(labelInfo.label);
+                    row.push(labelInfo.label);
+                });
+            } else {
+                // Add null values for label columns for other ages
+                row.push(null, null, null, null, null, null);
+            }
+
             rows.push(row);
         }
         chartData.addRows(rows);
@@ -144,11 +158,8 @@ function initializeChart() {
             width: '100%',
             height: 500,
             curveType: 'function',
-            legend: { 
-                position: 'bottom', 
-                maxLines: 2,
-                alignment: 'center'
-            },
+            // Hide the legend
+            legend: { position: 'none' },
             series: {
                 0: { color: 'transparent' },
                 1: { color: 'transparent' },
@@ -163,6 +174,13 @@ function initializeChart() {
                 2: { type: 'polynomial', degree: 5, color: 'black' },
                 3: { type: 'polynomial', degree: 5, color: 'green' },
                 4: { type: 'polynomial', degree: 5, color: 'darkgreen' }
+            },
+            annotations: {
+                alwaysOutside: true,
+                textStyle: {
+                    fontSize: 12,
+                    color: '#000'
+                }
             },
             hAxis: { title: 'Age', minValue: 0, maxValue: 44, gridlines: { count: 44 } },
             vAxis: { title: 'AMH Level (pmol/L)', minValue: 0, maxValue: 100, gridlines: { count: 50 } }
@@ -227,8 +245,8 @@ function addDataPoint() {
         }
     }
     
-	const roundedAge = Math.round(age);
-	
+    const roundedAge = Math.round(age);
+    
     // Remove the last patient point if it exists
     if (lastPatientPointAge !== null) {
         chartData.setValue(lastPatientPointAge, 6, null);
