@@ -165,13 +165,21 @@ function initializeChart() {
 
         // Draw the chart first
         chartInstance = new google.visualization.LineChart(document.getElementById('chart_div'));
+		console.log("Chart instance created:", chartInstance);
         chartInstance.draw(chartData, chartOptions);
+		console.log("Chart drawn");
 
         google.visualization.events.addListener(chartInstance, 'ready', function () {
 			console.log('Chart ready event triggered');
             const chartContainer = document.getElementById('chart_div');
 			console.log('Chart container:', chartContainer);
+			
+            if (!chartContainer) {
+                console.error("Chart container not found!");
+                return;
+            }
             const chartContainerRect = chartContainer.getBoundingClientRect();
+			console.log("Chart container rectangle:", chartContainerRect);
     
             // Create SVG overlay
             const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
