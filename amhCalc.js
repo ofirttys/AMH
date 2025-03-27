@@ -177,11 +177,36 @@ function initializeChart() {
                     ry: 5
                 },
                 datum: [
-                    { series: 0, x: 40, y: percentileData['10%'][40], text: '10% Percentile' },
-                    { series: 1, x: 40, y: percentileData['25%'][40], text: '25% Percentile' },
-                    { series: 2, x: 40, y: percentileData['50%'][40], text: '50% Percentile' },
-                    { series: 3, x: 40, y: percentileData['75%'][40], text: '75% Percentile' },
-                    { series: 4, x: 40, y: percentileData['90%'][40], text: '90% Percentile' }
+                    { 
+                        series: 0, 
+                        x: 40, 
+                        y: percentileData['10%'][40] || percentileData['10%'][Math.floor(40)], 
+                        text: '10% Percentile' 
+                    },
+                    { 
+                        series: 1, 
+                        x: 40, 
+                        y: percentileData['25%'][40] || percentileData['25%'][Math.floor(40)], 
+                        text: '25% Percentile' 
+                    },
+                    { 
+                        series: 2, 
+                        x: 40, 
+                        y: percentileData['50%'][40] || percentileData['50%'][Math.floor(40)], 
+                        text: '50% Percentile' 
+                    },
+                    { 
+                        series: 3, 
+                        x: 40, 
+                        y: percentileData['75%'][40] || percentileData['75%'][Math.floor(40)], 
+                        text: '75% Percentile' 
+                    },
+                    { 
+                        series: 4, 
+                        x: 40, 
+                        y: percentileData['90%'][40] || percentileData['90%'][Math.floor(40)], 
+                        text: '90% Percentile' 
+                    }
                 ]
             }
         };
