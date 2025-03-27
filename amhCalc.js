@@ -192,49 +192,36 @@ function initializeChart() {
         chartInstance.draw(chartData, chartOptions);
         
         // Add "90%" text overlay after chart is drawn
-        // We'll add it directly to the chart using the 90% data point at age 30
-        // The 90% percentile is the 5th data column (index 4)
-        const age = 30;
-        const ninetieth_percentile_value = percentileData['90%'](age);
-        
-        // Add an annotation data point for the 90% label
-        const dataTable = new google.visualization.DataTable();
-        dataTable.addColumn('number', 'x');
-        dataTable.addColumn('number', 'y');
-        dataTable.addColumn({type: 'string', role: 'annotation'});
-        dataTable.addRow([age, ninetieth_percentile_value, '90%']);
-        
-        const annotationOptions = {
-            width: '100%',
-            height: 500,
-            legend: { position: 'none' },
-            series: {
-                0: { 
-                    color: 'transparent',
-                    enableInteractivity: false,
-                    visibleInLegend: false
-                }
-            },
-            hAxis: { viewWindow: { min: 0, max: 44 } },
-            vAxis: { viewWindow: { min: 0, max: 100 } },
-            annotations: {
-                stem: {
-                    color: 'transparent'
-                },
-                textStyle: {
-                    fontSize: 14,
-                    bold: true,
-                    color: '#006400'
-                }
-            },
-            tooltip: { trigger: 'none' }
-        };
-        
-        // Draw the annotation over the main chart
-        const annotationChart = new google.visualization.LineChart(document.getElementById('chart_div'));
-        google.visualization.events.addListener(chartInstance, 'ready', function() {
-            annotationChart.draw(dataTable, annotationOptions);
-        });
+        // We'll add it directly to the DOM instead of using Google Charts annotations
+        setTimeout(() => {
+            const chartElement = document.getElementById('chart_div');
+            
+            // Check if the 90% label already exists
+            let labelElement = document.getElementById('ninetieth-percentile-label');
+            if (!labelElement) {
+                // Create the label if it doesn't exist
+                labelElement = document.createElement('div');
+                labelElement.id = 'ninetieth-percentile-label';
+                labelElement.style.position = 'absolute';
+                labelElement.style.fontSize = '14px';
+                labelElement.style.fontWeight = 'bold';
+                labelElement.style.color = '#006400';
+                labelElement.innerHTML = '90%';
+                
+                // Append to the chart container
+                chartElement.style.position = 'relative'; // Ensure the container allows absolute positioning
+                chartElement.appendChild(labelElement);
+            }
+            
+            // Position the label - approximate position for 90% line at age 30
+            // These values might need adjustment based on your chart's exact layout
+            const chartRect = chartElement.getBoundingClientRect();
+            const chartWidth = chartRect.width;
+            const chartHeight = chartRect.height;
+            
+            labelElement.style.left = (chartWidth * 0.7) + 'px'; // Horizontal position (70% from left)
+            labelElement.style.top = (chartHeight * 0.4) + 'px';  // Vertical position (40% from top)
+        }, 100);
     });
 }
 
@@ -305,47 +292,50 @@ function addDataPoint() {
 
     lastPatientPointAge = age;
 
+    // Update the chartOptions to ensure the patient point is visible with correct styling
+    chartOptions.series[5] = { 
+        type: 'scatter',
+        pointShape: { 
+            type: 'star', 
+            sides: 5, 
+            dent: 0.5
+        },
+        pointSize: 15,
+        color: '#703593'
+    };
+
+    // Draw the main chart with the updated data
     chartInstance.draw(chartData, chartOptions);
     
-    // Redraw the 90% label after updating the chart
-    const age30 = 30;
-    const ninetieth_percentile_value = percentileData['90%'](age30);
-    
-    const dataTable = new google.visualization.DataTable();
-    dataTable.addColumn('number', 'x');
-    dataTable.addColumn('number', 'y');
-    dataTable.addColumn({type: 'string', role: 'annotation'});
-    dataTable.addRow([age30, ninetieth_percentile_value, '90%']);
-    
-    const annotationOptions = {
-        width: '100%',
-        height: 500,
-        legend: { position: 'none' },
-        series: {
-            0: { 
-                color: 'transparent',
-                enableInteractivity: false,
-                visibleInLegend: false
-            }
-        },
-        hAxis: { viewWindow: { min: 0, max: 44 } },
-        vAxis: { viewWindow: { min: 0, max: 100 } },
-        annotations: {
-            stem: {
-                color: 'transparent'
-            },
-            textStyle: {
-                fontSize: 14,
-                bold: true,
-                color: '#006400'
-            }
-        },
-        tooltip: { trigger: 'none' }
-    };
-    
-    // Draw the annotation over the main chart
-    const annotationChart = new google.visualization.LineChart(document.getElementById('chart_div'));
+    // Add 90% label as a text annotation directly on the chart
+    // We're going to use a different approach - adding text directly to the chart's DOM
     setTimeout(() => {
-        annotationChart.draw(dataTable, annotationOptions);
+        const chartElement = document.getElementById('chart_div');
+        
+        // Check if the 90% label already exists
+        let labelElement = document.getElementById('ninetieth-percentile-label');
+        if (!labelElement) {
+            // Create the label if it doesn't exist
+            labelElement = document.createElement('div');
+            labelElement.id = 'ninetieth-percentile-label';
+            labelElement.style.position = 'absolute';
+            labelElement.style.fontSize = '14px';
+            labelElement.style.fontWeight = 'bold';
+            labelElement.style.color = '#006400';
+            labelElement.innerHTML = '90%';
+            
+            // Append to the chart container
+            chartElement.style.position = 'relative'; // Ensure the container allows absolute positioning
+            chartElement.appendChild(labelElement);
+        }
+        
+        // Position the label - approximate position for 90% line at age 30
+        // These values might need adjustment based on your chart's exact layout
+        const chartRect = chartElement.getBoundingClientRect();
+        const chartWidth = chartRect.width;
+        const chartHeight = chartRect.height;
+        
+        labelElement.style.left = (chartWidth * 0.7) + 'px'; // Horizontal position (70% from left)
+        labelElement.style.top = (chartHeight * 0.4) + 'px';  // Vertical position (40% from top)
     }, 100);
 }
