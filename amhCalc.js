@@ -99,9 +99,6 @@ function initializeChart() {
         chartData.addColumn('number', '75% Percentile');
         chartData.addColumn('number', '90% Percentile');
         chartData.addColumn('number', 'Patient');
-        
-        // Remove annotation column since it doesn't work
-        // chartData.addColumn({ type: 'string', role: 'annotation' });
 
         const rows = [];
         for (let age = 0; age <= 50; age += 0.5) {
@@ -113,7 +110,6 @@ function initializeChart() {
                 percentileData['75%'](age),
                 percentileData['90%'](age),
                 null
-                // Removed null annotation
             ];
 
             rows.push(row);
@@ -121,25 +117,22 @@ function initializeChart() {
         chartData.addRows(rows);
 
         chartOptions = {
-            title: 'AMH Levels by Age',
-            titleTextStyle: {
-                fontSize: 18,
-                bold: true,
-                alignment: 'center'
-            },
+            // Remove title - it's now in HTML
             width: '100%',
             height: 500,
             curveType: 'function',
             legend: { position: 'none' },
-            // Disable tooltips
-            tooltip: { trigger: 'none' },
+            // Set tooltip options to disable for all except patient point
+            tooltip: { 
+                trigger: 'selection'  // This helps disable tooltips for trendlines
+            },
             series: {
                 0: { color: 'transparent' },
                 1: { color: 'transparent' },
                 2: { color: 'transparent' },
                 3: { color: 'transparent' },
                 4: { color: 'transparent' },
-                // Change patient point to star
+                // Change patient point to star & enable tooltip
                 5: { 
                     type: 'scatter',
                     pointShape: { 
@@ -148,81 +141,79 @@ function initializeChart() {
                         dent: 0.5
                     },
                     pointSize: 8,
-                    color: '#703593'
+                    color: '#703593',
+                    enableInteractivity: true,
+                    tooltip: { trigger: 'focus' }
                 }
             },
             trendlines: {
-                0: { type: 'polynomial', degree: 5, color: '#FF0000' },
-                1: { type: 'polynomial', degree: 5, color: '#FFA500' },
-                2: { type: 'polynomial', degree: 5, color: '#000000' },
-                3: { type: 'polynomial', degree: 5, color: '#008000' },
-                4: { type: 'polynomial', degree: 5, color: '#006400' }
+                0: { type: 'polynomial', degree: 5, color: '#FF0000', enableInteractivity: false, tooltip: false },
+                1: { type: 'polynomial', degree: 5, color: '#FFA500', enableInteractivity: false, tooltip: false },
+                2: { type: 'polynomial', degree: 5, color: '#000000', enableInteractivity: false, tooltip: false },
+                3: { type: 'polynomial', degree: 5, color: '#008000', enableInteractivity: false, tooltip: false },
+                4: { type: 'polynomial', degree: 5, color: '#006400', enableInteractivity: false, tooltip: false }
             },
             hAxis: {
-                title: 'Age',
+                // Remove title - it's now in HTML
                 minValue: 0,
                 maxValue: 50,
                 gridlines: { count: 45 },
                 viewWindow: { max: 44 }
             },
             vAxis: { 
-                title: 'AMH Level (pmol/L)', 
+                // Remove title - it's now in HTML
                 minValue: 0, 
                 maxValue: 100, 
                 gridlines: { count: 50 },
                 viewWindow: { min: 0 }
-            },
-            // Remove annotations config since it doesn't work
-            annotations: {
-                // Add "90%" text overlay
-                datum: {
-                    stem: {
-                        color: 'transparent'
-                    },
-                    textStyle: {
-                        fontSize: 14,
-                        bold: true,
-                        color: '#006400' // Same color as 90% trendline
-                    }
-                }
             }
         };
 
         chartInstance = new google.visualization.LineChart(document.getElementById('chart_div'));
         chartInstance.draw(chartData, chartOptions);
         
-        // Add "90%" text overlay after chart is drawn
-        // We'll add it directly to the DOM instead of using Google Charts annotations
+        // Add percentile labels after chart is drawn
         setTimeout(() => {
             const chartElement = document.getElementById('chart_div');
             
-            // Check if the 90% label already exists
-            let labelElement = document.getElementById('ninetieth-percentile-label');
-            if (!labelElement) {
-                // Create the label if it doesn't exist
-                labelElement = document.createElement('div');
-                labelElement.id = 'ninetieth-percentile-label';
-                labelElement.style.position = 'absolute';
-                labelElement.style.fontSize = '14px';
-                labelElement.style.fontWeight = 'bold';
-                labelElement.style.color = '#006400';
-                labelElement.innerHTML = '90%';
-                
-                // Append to the chart container
-                chartElement.style.position = 'relative'; // Ensure the container allows absolute positioning
-                chartElement.appendChild(labelElement);
-            }
-            
-            // Position the label - approximate position for 90% line at age 30
-            // These values might need adjustment based on your chart's exact layout
-            const chartRect = chartElement.getBoundingClientRect();
-            const chartWidth = chartRect.width;
-            const chartHeight = chartRect.height;
-            
-            labelElement.style.left = (chartWidth * 0.7) + 'px'; // Horizontal position (70% from left)
-            labelElement.style.top = (chartHeight * 0.4) + 'px';  // Vertical position (40% from top)
+            // Add all percentile labels
+            addPercentileLabel(chartElement, '90%', '#006400', 0.7, 0.4);
+            addPercentileLabel(chartElement, '75%', '#008000', 0.65, 0.5);
+            addPercentileLabel(chartElement, '50%', '#000000', 0.6, 0.6);
+            addPercentileLabel(chartElement, '25%', '#FFA500', 0.55, 0.7);
+            addPercentileLabel(chartElement, '10%', '#FF0000', 0.5, 0.8);
         }, 100);
     });
+}
+
+// Function to add percentile labels
+function addPercentileLabel(chartElement, text, color, xPosition, yPosition) {
+    // Create unique ID for each percentile label
+    const labelId = 'percentile-' + text.replace('%', '');
+    
+    // Check if label already exists
+    let labelElement = document.getElementById(labelId);
+    if (!labelElement) {
+        // Create the label if it doesn't exist
+        labelElement = document.createElement('div');
+        labelElement.id = labelId;
+        labelElement.className = 'percentile-label percentile-' + text.replace('%', '');
+        labelElement.style.position = 'absolute';
+        labelElement.style.color = color;
+        labelElement.innerHTML = text;
+        
+        // Append to the chart container
+        chartElement.style.position = 'relative'; // Ensure the container allows absolute positioning
+        chartElement.appendChild(labelElement);
+    }
+    
+    // Position the label
+    const chartRect = chartElement.getBoundingClientRect();
+    const chartWidth = chartRect.width;
+    const chartHeight = chartRect.height;
+    
+    labelElement.style.left = (chartWidth * xPosition) + 'px';
+    labelElement.style.top = (chartHeight * yPosition) + 'px';
 }
 
 function addDataPoint() {
@@ -278,7 +269,6 @@ function addDataPoint() {
         }
     }
 
-    // Updated to match columns without annotation
     chartData.addRow([
         Number(age.toFixed(3)),
         percentileData['10%'](age),
@@ -287,7 +277,6 @@ function addDataPoint() {
         percentileData['75%'](age),
         percentileData['90%'](age),
         inputValue
-        // Removed annotation
     ]);
 
     lastPatientPointAge = age;
@@ -301,41 +290,23 @@ function addDataPoint() {
             dent: 0.5
         },
         pointSize: 15,
-        color: '#703593'
+        color: '#703593',
+        enableInteractivity: true,
+        tooltip: { trigger: 'focus' }
     };
 
     // Draw the main chart with the updated data
     chartInstance.draw(chartData, chartOptions);
     
-    // Add 90% label as a text annotation directly on the chart
-    // We're going to use a different approach - adding text directly to the chart's DOM
+    // Re-add percentile labels after chart is updated
     setTimeout(() => {
         const chartElement = document.getElementById('chart_div');
         
-        // Check if the 90% label already exists
-        let labelElement = document.getElementById('ninetieth-percentile-label');
-        if (!labelElement) {
-            // Create the label if it doesn't exist
-            labelElement = document.createElement('div');
-            labelElement.id = 'ninetieth-percentile-label';
-            labelElement.style.position = 'absolute';
-            labelElement.style.fontSize = '14px';
-            labelElement.style.fontWeight = 'bold';
-            labelElement.style.color = '#006400';
-            labelElement.innerHTML = '90%';
-            
-            // Append to the chart container
-            chartElement.style.position = 'relative'; // Ensure the container allows absolute positioning
-            chartElement.appendChild(labelElement);
-        }
-        
-        // Position the label - approximate position for 90% line at age 30
-        // These values might need adjustment based on your chart's exact layout
-        const chartRect = chartElement.getBoundingClientRect();
-        const chartWidth = chartRect.width;
-        const chartHeight = chartRect.height;
-        
-        labelElement.style.left = (chartWidth * 0.7) + 'px'; // Horizontal position (70% from left)
-        labelElement.style.top = (chartHeight * 0.4) + 'px';  // Vertical position (40% from top)
+        // Add all percentile labels
+        addPercentileLabel(chartElement, '90%', '#006400', 0.7, 0.4);
+        addPercentileLabel(chartElement, '75%', '#008000', 0.65, 0.5);
+        addPercentileLabel(chartElement, '50%', '#000000', 0.6, 0.6);
+        addPercentileLabel(chartElement, '25%', '#FFA500', 0.55, 0.7);
+        addPercentileLabel(chartElement, '10%', '#FF0000', 0.5, 0.8);
     }, 100);
 }

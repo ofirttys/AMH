@@ -10,6 +10,12 @@ h1 {
     color: #333;
 }
 
+.chart-title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
 #headerImage {
     display: block;
     margin: 0 auto 20px;
@@ -42,8 +48,8 @@ h1 {
     padding: 5px;
     box-sizing: border-box;
     height: 30px;
-	margin: 0 auto;
-	text-align: left;
+    margin: 0 auto;
+    text-align: left;
 }
 
 .input-method-group {
@@ -56,8 +62,8 @@ h1 {
     display: flex;
     flex-direction: column; /* Stacks radio buttons vertically */
     justify-content: flex-start;
-	align-items: flex-start;
-	text-align: left;	
+    align-items: flex-start;
+    text-align: left;	
 }
 
 .input-method-group .radio-container label {
@@ -96,17 +102,65 @@ h1 {
     width: auto;
 }
 
-
 #chart-container {
     display: flex;
     justify-content: center;
     margin-top: 20px;
     width: 100%;
+    position: relative;
 }
 
 #chart_div {
     width: 100%;
     height: 500px;
+    position: relative;
+}
+
+/* Axis labels */
+.axis-label {
+    position: absolute;
+    font-weight: bold;
+    color: #333;
+}
+
+.y-axis-label {
+    transform: rotate(-90deg);
+    left: -55px;
+    top: 50%;
+    transform-origin: top left;
+}
+
+.x-axis-label {
+    text-align: center;
+    width: 100%;
+    bottom: -30px;
+}
+
+/* Percentile labels */
+.percentile-label {
+    position: absolute;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.percentile-90 {
+    color: #006400;
+}
+
+.percentile-75 {
+    color: #008000;
+}
+
+.percentile-50 {
+    color: #000000;
+}
+
+.percentile-25 {
+    color: #FFA500;
+}
+
+.percentile-10 {
+    color: #FF0000;
 }
 
 button {
@@ -124,4 +178,43 @@ button:hover {
 
 #ageInputGroup {
     display: block;
+}
+
+/* Information section styling */
+#information-section {
+    margin-top: 50px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+#information-section h2 {
+    color: #77529E;
+    margin-top: 25px;
+    margin-bottom: 15px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+#information-section h2:first-child {
+    margin-top: 0;
+}
+
+#information-section p, 
+#information-section ul {
+    color: #000;
+    line-height: 1.6;
+}
+
+#information-section ul {
+    padding-left: 20px;
+}
+
+/* Footer styling */
+footer {
+    margin-top: 30px;
+    padding: 15px 0;
+    text-align: center;
+    border-top: 1px solid #eee;
+    font-size: 0.9em;
+    color: #555;
 }
