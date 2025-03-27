@@ -164,7 +164,9 @@ function initializeChart() {
         chartInstance.draw(chartData, chartOptions);
 
         google.visualization.events.addListener(chartInstance, 'ready', function () {
+			console.log('Chart ready event triggered');
             const chartContainer = document.getElementById('chart_div');
+			console.log('Chart container:', chartContainer);
             const chartContainerRect = chartContainer.getBoundingClientRect();
     
             // Create SVG overlay
@@ -175,6 +177,7 @@ function initializeChart() {
             svg.style.top = '0';
             svg.style.left = '0';
             svg.style.zIndex = '10'; // Ensure it's above the chart
+			svg.style.backgroundColor = 'rgba(255,0,0,0.1)';
             svg.style.pointerEvents = 'none';
 
             // Percentile labels and their colors
@@ -201,7 +204,9 @@ function initializeChart() {
 
             // Append SVG to chart container
             chartContainer.style.position = 'relative';
+			console.log('SVG created:', svg);
             chartContainer.appendChild(svg);
+			console.log('SVG appended to container');
         });
 
     });
