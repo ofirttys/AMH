@@ -122,9 +122,9 @@ function initializeChart() {
             height: 500,
             curveType: 'function',
             legend: { position: 'none' },
-            // Set tooltip options to disable for all except patient point
+            // Configure tooltip - we'll make it work only for the patient point
             tooltip: { 
-                trigger: 'selection'  // This helps disable tooltips for trendlines
+                trigger: 'focus'
             },
             series: {
                 0: { color: 'transparent' },
@@ -140,10 +140,9 @@ function initializeChart() {
                         sides: 5, 
                         dent: 0.5
                     },
-                    pointSize: 8,
+                    pointSize: 5,
                     color: '#703593',
-                    enableInteractivity: true,
-                    tooltip: { trigger: 'focus' }
+                    enableInteractivity: true
                 }
             },
             trendlines: {
@@ -289,10 +288,9 @@ function addDataPoint() {
             sides: 5, 
             dent: 0.5
         },
-        pointSize: 15,
+        pointSize: 5,
         color: '#703593',
-        enableInteractivity: true,
-        tooltip: { trigger: 'focus' }
+        enableInteractivity: true
     };
 
     // Draw the main chart with the updated data

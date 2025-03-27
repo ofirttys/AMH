@@ -12,8 +12,10 @@ h1 {
 
 .chart-title {
     text-align: center;
-    color: #333;
-    margin-bottom: 20px;
+    color: #77529E;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 }
 
 #headerImage {
@@ -120,12 +122,13 @@ h1 {
 .axis-label {
     position: absolute;
     font-weight: bold;
-    color: #333;
+    color: #77529E;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 }
 
 .y-axis-label {
     transform: rotate(-90deg);
-    left: -55px;
+    left: -40px;
     top: 50%;
     transform-origin: top left;
 }
@@ -133,7 +136,7 @@ h1 {
 .x-axis-label {
     text-align: center;
     width: 100%;
-    bottom: -30px;
+    bottom: -15px;
 }
 
 /* Percentile labels */
