@@ -163,11 +163,10 @@ function initializeChart() {
         chartInstance = new google.visualization.LineChart(document.getElementById('chart_div'));
         chartInstance.draw(chartData, chartOptions);
 
-        // Add SVG overlay with labels
         google.visualization.events.addListener(chartInstance, 'ready', function () {
             const chartContainer = document.getElementById('chart_div');
             const chartContainerRect = chartContainer.getBoundingClientRect();
-            
+    
             // Create SVG overlay
             const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
             svg.setAttribute('width', chartContainerRect.width);
@@ -175,6 +174,7 @@ function initializeChart() {
             svg.style.position = 'absolute';
             svg.style.top = '0';
             svg.style.left = '0';
+            svg.style.zIndex = '10'; // Ensure it's above the chart
             svg.style.pointerEvents = 'none';
 
             // Percentile labels and their colors
@@ -189,11 +189,12 @@ function initializeChart() {
             // Create text elements for each label
             labels.forEach((label, index) => {
                 const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                text.setAttribute('x', '95%');
-                text.setAttribute('y', `${10 + index * 30}%`);
+                text.setAttribute('x', chartContainerRect.width * 0.95); // Adjust x position
+                text.setAttribute('y', `${10 + index * 30}`); // Use pixel value
                 text.setAttribute('fill', label.color);
                 text.setAttribute('text-anchor', 'end');
-                text.setAttribute('font-size', '12');
+                text.setAttribute('font-size', '14');
+                text.setAttribute('font-weight', 'bold');
                 text.textContent = label.text;
                 svg.appendChild(text);
             });
@@ -202,6 +203,7 @@ function initializeChart() {
             chartContainer.style.position = 'relative';
             chartContainer.appendChild(svg);
         });
+
     });
 }
 
