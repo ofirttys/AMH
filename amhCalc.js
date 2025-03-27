@@ -111,7 +111,6 @@ function initializeChart() {
         chartData.addColumn('number', 'Patient');
         chartData.addColumn({type: 'string', role: 'style'});
 
-        // Add labels for trendlines
         const trendlineLabels = [
             { label: '10% Percentile', color: 'red' },
             { label: '25% Percentile', color: 'orange' },
@@ -133,17 +132,6 @@ function initializeChart() {
                 null
             ];
 
-            // Add trendline labels at a fixed position (e.g., age 45)
-            if (age === 45) {
-                trendlineLabels.forEach((labelInfo, index) => {
-                    row.push(labelInfo.label);
-                    row.push(labelInfo.label);
-                });
-            } else {
-                // Add null values for label columns for other ages
-                row.push(null, null, null, null, null, null);
-            }
-
             rows.push(row);
         }
         chartData.addRows(rows);
@@ -161,19 +149,44 @@ function initializeChart() {
             // Hide the legend
             legend: { position: 'none' },
             series: {
-                0: { color: 'transparent' },
-                1: { color: 'transparent' },
-                2: { color: 'transparent' },
-                3: { color: 'transparent' },
-                4: { color: 'transparent' },
+                0: { color: 'transparent', labelInLegend: 'Low Percentile' },
+                1: { color: 'transparent', labelInLegend: 'Lower Percentile' },
+                2: { color: 'transparent', labelInLegend: 'Medium Percentile' },
+                3: { color: 'transparent', labelInLegend: 'Higher Percentile' },
+                4: { color: 'transparent', labelInLegend: 'High Percentile' },
                 6: { type: 'scatter' }
             },
             trendlines: {
-                0: { type: 'polynomial', degree: 5, color: 'red' },
-                1: { type: 'polynomial', degree: 5, color: 'orange' },
-                2: { type: 'polynomial', degree: 5, color: 'black' },
-                3: { type: 'polynomial', degree: 5, color: 'green' },
-                4: { type: 'polynomial', degree: 5, color: 'darkgreen' }
+                0: { 
+                    type: 'polynomial', 
+                    degree: 5, 
+                    color: 'red',
+                    labelInLegend: '10% Percentile'
+                },
+                1: { 
+                    type: 'polynomial', 
+                    degree: 5, 
+                    color: 'orange',
+                    labelInLegend: '25% Percentile'
+                },
+                2: { 
+                    type: 'polynomial', 
+                    degree: 5, 
+                    color: 'black',
+                    labelInLegend: '50% Percentile'
+                },
+                3: { 
+                    type: 'polynomial', 
+                    degree: 5, 
+                    color: 'green',
+                    labelInLegend: '75% Percentile'
+                },
+                4: { 
+                    type: 'polynomial', 
+                    degree: 5, 
+                    color: 'darkgreen',
+                    labelInLegend: '90% Percentile'
+                }
             },
             annotations: {
                 alwaysOutside: true,
