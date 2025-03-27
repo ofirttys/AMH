@@ -40,36 +40,32 @@ let chartInstance = null;
 let chartData = null;
 let chartOptions = null;
 let percentileData = {};
+let lastPatientPointAge = null;
 
-function interpolateData(data, minAge = 0, maxAge = 50) {
-    // Create an array to store interpolated values
-    const interpolatedData = new Array(maxAge + 1).fill(null);
-
+function interpolateData(data) {
     // Sort data by x (age)
     data.sort((a, b) => a.x - b.x);
 
-    // Interpolate values for whole number ages
-    for (let age = minAge; age <= maxAge; age++) {
-        // Find the closest two data points
-        const closestPoints = data.filter(point => Math.floor(point.x) === age);
-        
-        if (closestPoints.length > 0) {
-            // If we have points exactly at this age, take the average
-            const avgValue = closestPoints.reduce((sum, point) => sum + point.y, 0) / closestPoints.length;
-            interpolatedData[age] = avgValue;
-        } else {
-            // If no exact match, do linear interpolation
-            const lowerPoint = data.filter(point => point.x < age).pop();
-            const upperPoint = data.find(point => point.x > age);
+    // Create an interpolation function
+    return function(age) {
+        // Find the two closest data points
+        const lowerPoint = data.filter(point => point.x <= age).pop();
+        const upperPoint = data.find(point => point.x > age);
 
-            if (lowerPoint && upperPoint) {
-                const t = (age - lowerPoint.x) / (upperPoint.x - lowerPoint.x);
-                interpolatedData[age] = lowerPoint.y + t * (upperPoint.y - lowerPoint.y);
-            }
+        if (lowerPoint && upperPoint) {
+            // Linear interpolation
+            const t = (age - lowerPoint.x) / (upperPoint.x - lowerPoint.x);
+            return lowerPoint.y + t * (upperPoint.y - lowerPoint.y);
+        } else if (lowerPoint) {
+            // If no upper point, use the lower point's value
+            return lowerPoint.y;
+        } else if (upperPoint) {
+            // If no lower point, use the upper point's value
+            return upperPoint.y;
         }
-    }
-
-    return interpolatedData;
+        
+        return null;
+    };
 }
 
 async function loadPercentileData() {
@@ -81,7 +77,7 @@ async function loadPercentileData() {
             }
             const data = await response.json();
             
-            // Interpolate data to get values for whole number ages
+            // Create an interpolation function for each percentile
             percentileData[percentileLabel] = interpolateData(data);
         }
         return true;
@@ -112,14 +108,14 @@ function initializeChart() {
         chartData.addColumn({type: 'string', role: 'style'});
 
         const rows = [];
-        for (let age = 0; age <= 50; age++) {
+        for (let age = 0; age <= 50; age += 0.5) {
             const row = [
                 age,
-                percentileData['10%'][age] || null,
-                percentileData['25%'][age] || null,
-                percentileData['50%'][age] || null,
-                percentileData['75%'][age] || null,
-                percentileData['90%'][age] || null,
+                percentileData['10%'](age),
+                percentileData['25%'](age),
+                percentileData['50%'](age),
+                percentileData['75%'](age),
+                percentileData['90%'](age),
                 null,
                 null
             ];
@@ -148,13 +144,13 @@ function initializeChart() {
                 6: { type: 'scatter' }
             },
             trendlines: {
-                0: { type: 'polynomial', degree: 5, color: 'red' },
-                1: { type: 'polynomial', degree: 5, color: 'orange' },
-                2: { type: 'polynomial', degree: 5, color: 'black' },
-                3: { type: 'polynomial', degree: 5, color: 'green' },
-                4: { type: 'polynomial', degree: 5, color: 'darkgreen' }
+                0: { type: 'polynomial', degree: 5, color: '#FF0000' },
+                1: { type: 'polynomial', degree: 5, color: '#FFA500' },
+                2: { type: 'polynomial', degree: 5, color: '#000000' },
+                3: { type: 'polynomial', degree: 5, color: '#008000' },
+                4: { type: 'polynomial', degree: 5, color: '#006400' }
             },
-            hAxis: { title: 'Age', minValue: 0, maxValue: 44, gridlines: { count: 45 }, viewWindow: { max: 44 } },
+            hAxis: { title: 'Age', minValue: 0, maxValue: 50, gridlines: { count: 51 } },
             vAxis: { 
                 title: 'AMH Level (pmol/L)', 
                 minValue: 0, 
@@ -163,51 +159,6 @@ function initializeChart() {
                 viewWindow: {
                     min: 0
                 }
-            },
-            annotations: {
-                textStyle: {
-                    fontSize: 12,
-                    bold: true
-                },
-                alwaysOutside: true,
-                boxStyle: {
-                    stroke: '#888',
-                    strokeWidth: 1,
-                    rx: 5,
-                    ry: 5
-                },
-                datum: [
-                    { 
-                        series: 0, 
-                        x: 40, 
-                        y: percentileData['10%'][40] || percentileData['10%'][Math.floor(40)], 
-                        text: '10% Percentile' 
-                    },
-                    { 
-                        series: 1, 
-                        x: 40, 
-                        y: percentileData['25%'][40] || percentileData['25%'][Math.floor(40)], 
-                        text: '25% Percentile' 
-                    },
-                    { 
-                        series: 2, 
-                        x: 40, 
-                        y: percentileData['50%'][40] || percentileData['50%'][Math.floor(40)], 
-                        text: '50% Percentile' 
-                    },
-                    { 
-                        series: 3, 
-                        x: 40, 
-                        y: percentileData['75%'][40] || percentileData['75%'][Math.floor(40)], 
-                        text: '75% Percentile' 
-                    },
-                    { 
-                        series: 4, 
-                        x: 40, 
-                        y: percentileData['90%'][40] || percentileData['90%'][Math.floor(40)], 
-                        text: '90% Percentile' 
-                    }
-                ]
             }
         };
 
@@ -215,9 +166,6 @@ function initializeChart() {
         chartInstance.draw(chartData, chartOptions);
     });
 }
-
-// Add this global variable at the top of the file
-let lastPatientPointAge = null;
 
 function addDataPoint() {
     // Ensure chart is initialized
@@ -270,20 +218,31 @@ function addDataPoint() {
         }
     }
     
-    const roundedAge = Math.round(age);
-    
     // Remove the last patient point if it exists
     if (lastPatientPointAge !== null) {
-        chartData.setValue(lastPatientPointAge, 6, null);
-        chartData.setValue(lastPatientPointAge, 7, null);
+        // Find and remove the existing patient point
+        for (let i = 0; i < chartData.getNumberOfRows(); i++) {
+            if (chartData.getValue(i, 6) !== null) {
+                chartData.removeRow(i);
+                break;
+            }
+        }
     }
     
-    // Update the chart with the new patient data point
-    chartData.setValue(roundedAge, 6, inputValue);
-    chartData.setValue(roundedAge, 7, 'point {size: 15; shape-type: cross; fill-color: blue; stroke-color: blue;}');
+    // Add the new patient data point
+    chartData.addRow([
+        age,
+        percentileData['10%'](age),
+        percentileData['25%'](age),
+        percentileData['50%'](age),
+        percentileData['75%'](age),
+        percentileData['90%'](age),
+        inputValue,
+        'point {size: 15; shape-type: cross; fill-color: blue; stroke-color: blue;}'
+    ]);
     
     // Update the last patient point age
-    lastPatientPointAge = roundedAge;
+    lastPatientPointAge = age;
     
     // Redraw the chart with the updated data
     chartInstance.draw(chartData, chartOptions);
