@@ -154,7 +154,7 @@ function initializeChart() {
                 title: 'Age',
                 minValue: 0,
                 maxValue: 50,
-                gridlines: { count: 51 }
+                gridlines: { count: 45 },
                 viewWindow: {
                     max: 44
                 }
