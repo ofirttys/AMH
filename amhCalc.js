@@ -140,7 +140,7 @@ function initializeChart() {
                         sides: 5, 
                         dent: 0.5
                     },
-                    pointSize: 5,
+                    pointSize: 8,
                     color: '#703593',
                     enableInteractivity: true
                 }
@@ -288,7 +288,7 @@ function addDataPoint() {
             sides: 5, 
             dent: 0.5
         },
-        pointSize: 5,
+        pointSize: 8,
         color: '#703593',
         enableInteractivity: true
     };
