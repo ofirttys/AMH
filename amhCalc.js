@@ -110,7 +110,7 @@ function initializeChart() {
         const rows = [];
         for (let age = 0; age <= 50; age += 0.5) {
             const row = [
-                age,
+                Number(age.toFixed(3)),
                 percentileData['10%'](age),
                 percentileData['25%'](age),
                 percentileData['50%'](age),
@@ -136,12 +136,12 @@ function initializeChart() {
             curveType: 'function',
             legend: { position: 'none' },
             series: {
-                0: { color: 'transparent' },
-                1: { color: 'transparent' },
-                2: { color: 'transparent' },
-                3: { color: 'transparent' },
-                4: { color: 'transparent' },
-                6: { type: 'scatter' }
+                0: { color: '#FF0000' },     // 10% Percentile
+                1: { color: '#FFA500' },     // 25% Percentile
+                2: { color: '#000000' },     // 50% Percentile
+                3: { color: '#008000' },     // 75% Percentile
+                4: { color: '#006400' },     // 90% Percentile
+                6: { type: 'scatter', color: 'blue', pointSize: 15 }
             },
             trendlines: {
                 0: { type: 'polynomial', degree: 5, color: '#FF0000' },
@@ -166,6 +166,7 @@ function initializeChart() {
                     bold: true
                 },
                 alwaysOutside: true,
+                style: 'line',
                 datum: [
                     { 
                         series: 0, 
@@ -270,14 +271,14 @@ function addDataPoint() {
     
     // Add the new patient data point
     chartData.addRow([
-        age,
+        Number(age.toFixed(3)),
         percentileData['10%'](age),
         percentileData['25%'](age),
         percentileData['50%'](age),
         percentileData['75%'](age),
         percentileData['90%'](age),
         inputValue,
-        'point {size: 15; shape-type: cross; fill-color: blue; stroke-color: blue;}'
+        null
     ]);
     
     // Update the last patient point age
