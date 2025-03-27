@@ -155,7 +155,7 @@ function initializeChart() {
                 3: { type: 'polynomial', degree: 5, color: 'green' },
                 4: { type: 'polynomial', degree: 5, color: 'darkgreen' }
             },
-            hAxis: { title: 'Age', minValue: 0, maxValue: 44, gridlines: { count: 44 } },
+            hAxis: { title: 'Age', minValue: 0, maxValue: 42, gridlines: { count: 43 } },
             vAxis: { title: 'AMH Level (pmol/L)', minValue: 0, maxValue: 100, gridlines: { count: 50 } }
         };
 
