@@ -51,7 +51,7 @@ h1 {
 .form-group label {
     display: block;
     margin-bottom: 5px;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 500;
     color: #333;
 }
@@ -65,7 +65,7 @@ h1 {
     text-align: left;
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 16px;
+    font-size: 18px;
 }
 
 .input-method-group {
@@ -81,7 +81,7 @@ h1 {
     justify-content: flex-start;
     align-items: flex-start;
     text-align: left;
-    font-size: 16px;
+    font-size: 18px;
     padding-top: 8px;
     margin: 0;
 }
@@ -90,7 +90,7 @@ h1 {
     display: flex;
     align-items: center;
     margin-bottom: 8px;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: normal;
 }
 
@@ -182,7 +182,7 @@ button {
     border: 1px solid #d8bfd8;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 500;
     transition: background-color 0.2s ease;
 }
