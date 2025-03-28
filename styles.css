@@ -26,81 +26,92 @@ h1 {
 }
 
 #inputForm {
-    max-width: 450px;
+    max-width: 550px;
     margin: 0 auto;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 #birthDate, #ageInput, #valueInput {
-    width: 250px; /* Fixed width for inputs */
-    height: 30px; /* Matches the existing input height */
-    box-sizing: border-box; /* Ensures padding doesn't affect width/height */
+    width: 280px;
+    height: 36px;
+    box-sizing: border-box;
+    font-size: 16px;
 }
 
 .form-group {
-    margin-bottom: 10px;
+    margin-bottom: 18px;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 3px;
+    margin-bottom: 5px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
 }
 
 .form-group input {
     width: 100%;
-    padding: 5px;
+    padding: 8px 10px;
     box-sizing: border-box;
-    height: 30px;
+    height: 36px;
     margin: 0 auto;
     text-align: left;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
 }
 
 .input-method-group {
-    display: flex; /* Ensures layout is side-by-side */
-    align-items: center; /* Aligns items vertically */
-    gap: 20px; /* Adds space between input groups and radio buttons */
+    display: flex;
+    align-items: center;
+    gap: 25px;
 }
 
 .radio-container {
     display: flex;
-    flex-direction: column; /* Stacks radio buttons vertically */
+    flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    text-align: left;	
+    text-align: left;
+    font-size: 16px;
 }
 
 .input-method-group .radio-container label {
     display: flex;
     align-items: center;
+    margin-bottom: 8px;
 }
 
 .input-method-group .radio-container input {
-    margin-right: 5px;
+    margin-right: 8px;
     width: auto;
+    height: auto;
 }
 
-/* AMH input with units */
 .amh-input-group .input-with-units {
     display: flex;
     align-items: center;
-    gap: 15px;
-}
-
-.amh-input-group .input-with-units input {
-    flex-grow: 1;
+    gap: 20px;
 }
 
 .amh-units {
     display: flex;
-    gap: 10px;
+    gap: 15px;
+    font-size: 16px;
 }
 
 .amh-units label {
     display: flex;
     align-items: center;
+    font-weight: normal;
 }
 
 .amh-units input {
-    margin-right: 5px;
+    margin-right: 8px;
     width: auto;
 }
 
@@ -118,7 +129,6 @@ h1 {
     position: relative;
 }
 
-/* Axis labels */
 .axis-label {
     position: absolute;
     font-weight: bold;
@@ -139,7 +149,6 @@ h1 {
     bottom: -15px;
 }
 
-/* Percentile labels */
 .percentile-label {
     position: absolute;
     font-size: 14px;
@@ -168,11 +177,15 @@ h1 {
 
 button {
     width: 100%;
-    padding: 8px;
-    background-color: #e6e6fa; /* Light purple */
+    padding: 10px;
+    background-color: #e6e6fa;
     color: black;
     border: 1px solid #d8bfd8;
+    border-radius: 4px;
     cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
 }
 
 button:hover {
@@ -183,7 +196,6 @@ button:hover {
     display: block;
 }
 
-/* Information section styling */
 #information-section {
     margin-top: 50px;
     padding: 20px;
@@ -212,7 +224,6 @@ button:hover {
     padding-left: 20px;
 }
 
-/* Footer styling */
 footer {
     margin-top: 30px;
     padding: 15px 0;
