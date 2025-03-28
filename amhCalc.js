@@ -162,14 +162,14 @@ function initializeChart() {
                 // Remove title - it's now in HTML
                 minValue: 0,
                 maxValue: 50,
-                gridlines: { count: 45 },
-                viewWindow: { max: 44 }
+                gridlines: { count: 46 },
+                viewWindow: { max: 45 }
             },
             vAxis: { 
                 // Remove title - it's now in HTML
                 minValue: 0, 
-                maxValue: 100, 
-                gridlines: { count: 50 },
+                maxValue: 70, 
+                gridlines: { count: 35 },
                 viewWindow: { min: 0 }
             }
         };
@@ -259,8 +259,8 @@ function addDataPoint() {
             return;
         }
         age = parseFloat(ageInput);
-        if (isNaN(age) || age < 0 || age > 50) {
-            alert('Please enter a valid age between 0 and 50');
+        if (isNaN(age) || age < 0 || age > 45) {
+            alert('Please enter a valid age between 0 and 45');
             return;
         }
     }
