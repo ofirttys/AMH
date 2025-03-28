@@ -56,7 +56,6 @@ h1 {
     color: #333;
 }
 
-/* This specifically targets label elements */
 #birthDateLabel, 
 #ageInputGroup label, 
 .amh-input-group > label {
@@ -96,12 +95,14 @@ h1 {
     display: flex;
     align-items: center;
     margin-bottom: 8px;
+    font-size: 16px;
+    font-weight: normal;
 }
 
-.radio-container input {
+.radio-container input[type="radio"] {
     margin-right: 8px;
-    width: auto;
-    height: auto;
+    width: 16px;
+    height: 16px;
 }
 
 .input-method-group .radio-container,
@@ -110,7 +111,18 @@ h1 {
     padding-top: 8px;
 }
 
-/* AMH input with units */
+.input-method-group .radio-container label,
+.amh-input-group .radio-container label {
+    font-size: 16px;
+    font-weight: normal;
+}
+
+.input-method-group .radio-container input[type="radio"],
+.amh-input-group .radio-container input[type="radio"] {
+    width: 16px;
+    height: 16px;
+}
+
 .amh-input-group .input-with-units {
     display: flex;
     align-items: center;
