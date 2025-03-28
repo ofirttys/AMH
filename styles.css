@@ -111,6 +111,11 @@ h1 {
     padding-top: 8px;
 }
 
+.amh-input-group .radio-container {
+    padding-top: 0;
+    margin-top: 8px;
+}
+
 .input-method-group .radio-container label,
 .amh-input-group .radio-container label {
     font-size: 16px;
@@ -125,7 +130,7 @@ h1 {
 
 .amh-input-group .input-with-units {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 25px;
 }
 
@@ -134,6 +139,7 @@ h1 {
     height: 36px;
     flex-grow: 0;
     flex-shrink: 0;
+	margin-top: 0;
 }
 
 .amh-units {
