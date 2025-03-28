@@ -98,6 +98,11 @@ h1 {
     gap: 20px;
 }
 
+.amh-input-group .input-with-units input {
+    flex-grow: 0;
+    width: 280px;
+}
+
 .amh-units {
     display: flex;
     gap: 15px;
