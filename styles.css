@@ -95,9 +95,8 @@ h1 {
 /* AMH input with units */
 .amh-input-group .input-with-units {
     display: flex;
-    align-items: center;
-    gap: 15px; /* Reduced from 20px */
-    flex-wrap: wrap; /* Allow wrapping if needed */
+    align-items: flex-start;
+    gap: 25px; /* Match gap from input-method-group */
 }
 
 .amh-input-group .input-with-units input {
