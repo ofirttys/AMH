@@ -185,7 +185,7 @@ function initializeChart() {
             addPercentileLabel(chartElement, '90%', '#006400', 0.65, 0.365);
             addPercentileLabel(chartElement, '75%', '#008000', 0.625, 0.475);
             addPercentileLabel(chartElement, '50%', '#000000', 0.6, 0.585);
-            addPercentileLabel(chartElement, '25%', '#FFA500', 0.575, 0.665);
+            addPercentileLabel(chartElement, '25%', '#FFA500', 0.575, 0.65);
             addPercentileLabel(chartElement, '10%', '#FF0000', 0.55, 0.71);
         }, 100);
     });
@@ -310,7 +310,7 @@ function addDataPoint() {
         addPercentileLabel(chartElement, '90%', '#006400', 0.65, 0.365);
         addPercentileLabel(chartElement, '75%', '#008000', 0.625, 0.475);
         addPercentileLabel(chartElement, '50%', '#000000', 0.6, 0.585);
-        addPercentileLabel(chartElement, '25%', '#FFA500', 0.575, 0.665);
+        addPercentileLabel(chartElement, '25%', '#FFA500', 0.575, 0.65);
         addPercentileLabel(chartElement, '10%', '#FF0000', 0.55, 0.71);
     }, 100);
 }
