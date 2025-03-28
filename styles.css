@@ -56,13 +56,6 @@ h1 {
     color: #333;
 }
 
-#birthDateLabel, 
-#ageInputGroup label, 
-.amh-input-group > label {
-    font-size: 16px;
-    font-weight: 500;
-}
-
 .form-group input {
     width: 100%;
     padding: 8px 10px;
@@ -81,6 +74,7 @@ h1 {
     gap: 25px;
 }
 
+/* Radio container styling */
 .radio-container {
     display: flex;
     flex-direction: column;
@@ -89,6 +83,7 @@ h1 {
     text-align: left;
     font-size: 16px;
     padding-top: 8px;
+    margin: 0;
 }
 
 .radio-container label {
@@ -105,45 +100,14 @@ h1 {
     height: 16px;
 }
 
-.input-method-group .radio-container,
-.amh-input-group .radio-container {
-    margin: 0;
-    padding-top: 8px;
-}
-
-.amh-input-group .radio-container {
-    padding-top: 0;
-    margin-top: 8px;
-}
-
-.input-method-group .radio-container label,
-.amh-input-group .radio-container label {
-    font-size: 16px;
-    font-weight: normal;
-}
-
-.input-method-group .radio-container input[type="radio"],
-.amh-input-group .radio-container input[type="radio"] {
-    width: 16px;
-    height: 16px;
-}
-
-.amh-input-group .input-with-units {
-    display: flex;
-    align-items: flex-start;
-    gap: 25px;
-}
-
-.amh-input-group .input-with-units input {
-    width: 280px;
-    height: 36px;
-    flex-grow: 0;
-    flex-shrink: 0;
-	margin-top: 0;
-}
-
+.amh-input-group,
+.amh-input-group .input-with-units,
 .amh-units {
     display: none;
+}
+
+#amhInputGroup {
+    display: block;
 }
 
 #chart-container {

@@ -29,18 +29,18 @@
                 </label>
             </div>
         </div>
-        <div class="form-group amh-input-group">
-            <label for="valueInput">AMH Level:</label>
-            <div class="input-with-units">
+        <div class="form-group input-method-group">
+            <div id="amhInputGroup">
+                <label for="valueInput">AMH Level:</label>
                 <input type="number" id="valueInput" step="0.1" placeholder="Enter AMH Level">
-                <div class="radio-container">
-                    <label>
-                        <input type="radio" name="amhUnits" value="pmol/L" checked> pmol/L
-                    </label>
-                    <label>
-                        <input type="radio" name="amhUnits" value="ng/ml"> ng/ml
-                    </label>
-                </div>
+            </div>
+            <div class="radio-container">
+                <label>
+                    <input type="radio" name="amhUnits" value="pmol/L" checked> pmol/L
+                </label>
+                <label>
+                    <input type="radio" name="amhUnits" value="ng/ml"> ng/ml
+                </label>
             </div>
         </div>
         <button onclick="addDataPoint()">Calculate</button>
