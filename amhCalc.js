@@ -272,7 +272,7 @@ function addDataPoint() {
     }
 
 	const resultsElement = document.getElementById('amh-results');
-    resultsElement.innerHTML = `Age: ${age.toFixed(1)}, AMH Level: ${amhPmolL.toFixed(1)} pmol/L, ${amhNgMl} ng/ml`;
+    resultsElement.innerHTML = `Age: ${age.toFixed(1)}, AMH Level: ${amhPmolL.toFixed(2)} pmol/L, ${amhNgMl} ng/ml`;
     resultsElement.style.display = 'block';
 
     if (lastPatientPointAge !== null) {
