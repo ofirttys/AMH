@@ -106,6 +106,15 @@ h1 {
     display: none;
 }
 
+.amh-results {
+    text-align: center;
+    color: #77529E;
+    margin-bottom: 15px;
+    font-size: 16px;
+    font-weight: normal;
+    display: none;
+}
+
 #amhInputGroup {
     display: block;
 }

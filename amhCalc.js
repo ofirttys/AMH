@@ -234,9 +234,15 @@ function addDataPoint() {
     let inputValue = parseFloat(document.getElementById('valueInput').value);
 
     const amhUnits = document.querySelector('input[name="amhUnits"]:checked').value;
+	let amhPmolL = inputValue;
+    let amhNgMl = inputValue;
+	
     if (amhUnits === 'ng/ml') {
+		amhPmolL = inputValue * 7.14;
         inputValue *= 7.14;
-    }
+    } else {
+		amhNgMl = (inputValue / 7.14).toFixed(2);
+	}
 
     if (isNaN(inputValue) || inputValue <= 0) {
         alert('Please enter a valid AMH level greater than 0');
@@ -264,6 +270,10 @@ function addDataPoint() {
             return;
         }
     }
+
+	const resultsElement = document.getElementById('amh-results');
+    resultsElement.innerHTML = `Age: ${age.toFixed(1)}, AMH Level: ${amhPmolL.toFixed(1)} pmol/L, ${amhNgMl} ng/ml`;
+    resultsElement.style.display = 'block';
 
     if (lastPatientPointAge !== null) {
         for (let i = 0; i < chartData.getNumberOfRows(); i++) {
