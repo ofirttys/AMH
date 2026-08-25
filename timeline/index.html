@@ -26,6 +26,8 @@
     --clinic-soft: #e4efe8;
     --covid: #8c4a45;
     --covid-soft: #f3e5e3;
+    --msf: #7a5480;
+    --msf-soft: #eee3ef;
 
     --accent: #3f7a5d;
     --shadow: 0 1px 2px rgba(28,33,29,0.06), 0 6px 20px -8px rgba(28,33,29,0.12);
@@ -49,6 +51,8 @@
       --clinic-soft: #1c2921;
       --covid: #d18e88;
       --covid-soft: #2f1e1c;
+      --msf: #cba3d0;
+      --msf-soft: #2b2130;
 
       --accent: #8fc3a4;
       --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -8px rgba(0,0,0,0.45);
@@ -72,6 +76,8 @@
     --clinic-soft: #1c2921;
     --covid: #d18e88;
     --covid-soft: #2f1e1c;
+    --msf: #cba3d0;
+    --msf-soft: #2b2130;
 
     --accent: #8fc3a4;
     --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -8px rgba(0,0,0,0.45);
@@ -158,6 +164,7 @@
   .dot.market { background: var(--market); }
   .dot.clinic { background: var(--clinic); }
   .dot.covid  { background: var(--covid); }
+  .dot.msf    { background: var(--msf); }
 
   /* Eras */
   .era {
@@ -236,6 +243,7 @@
   .entry.market { --marker: var(--market); }
   .entry.clinic { --marker: var(--clinic); }
   .entry.covid  { --marker: var(--covid); }
+  .entry.msf    { --marker: var(--msf); }
 
   .entry-card {
     background: var(--surface);
@@ -276,6 +284,7 @@
   .entry.market .tag { --tag-bg: var(--market-soft); }
   .entry.clinic .tag { --tag-bg: var(--clinic-soft); }
   .entry.covid  .tag { --tag-bg: var(--covid-soft); }
+  .entry.msf    .tag { --tag-bg: var(--msf-soft); }
 
   .entry-title {
     font-family: 'Fraunces', Georgia, serif;
@@ -294,10 +303,35 @@
   }
 
   .entry-body strong { color: var(--ink); font-weight: 600; }
+  .entry-body a { color: var(--marker, var(--ink)); }
 
   .unconfirmed {
     font-style: italic;
     opacity: 0.85;
+  }
+
+  .section-divider {
+    margin: 4rem 0 0;
+    padding-top: 2.4rem;
+    border-top: 1px dashed var(--hairline);
+  }
+
+  .section-intro {
+    padding-left: 2.6rem;
+    margin: 0 0 1.6rem;
+  }
+
+  .section-intro .era-title {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-intro p {
+    font-size: 0.88rem;
+    color: var(--muted);
+    max-width: 58ch;
+    line-height: 1.55;
+    margin: 0;
   }
 
   footer {
@@ -313,7 +347,7 @@
 
   @media (max-width: 520px) {
     .wrap { padding: 3rem 1.1rem 4rem; }
-    .era-head, .era-note, .entries { padding-left: 1.9rem; }
+    .era-head, .era-note, .entries, .section-intro { padding-left: 1.9rem; }
     .entry::before { left: -1.9rem; }
     .entries::before { left: 0; }
   }
@@ -332,6 +366,7 @@
       <span class="legend-item"><span class="dot market"></span>Ownership &amp; M&amp;A</span>
       <span class="legend-item"><span class="dot clinic"></span>Clinics &amp; clinical practice</span>
       <span class="legend-item"><span class="dot covid"></span>COVID-19</span>
+      <span class="legend-item"><span class="dot msf"></span>Mount Sinai Fertility spotlight</span>
     </div>
   </header>
 
@@ -747,8 +782,131 @@
     </div>
   </section>
 
+  <!-- MSF SPOTLIGHT -->
+  <section class="era section-divider">
+    <div class="section-intro">
+      <span class="era-title">Mount Sinai Fertility — a closer look</span>
+      <p>A separate, more granular thread through one clinic's institutional history and staffing — physician moves, program launches, and facility decisions that don't otherwise surface in market-wide reporting. Compiled from a mix of the clinic's own site, physician bios at other clinics, and firsthand institutional knowledge; several dates below are approximate.</p>
+    </div>
+    <div class="entries">
+
+      <div class="entry msf">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date unconfirmed">Undated</span><span class="tag">MSF</span></div>
+          <h3 class="entry-title">Formerly known under a different name</h3>
+          <p class="entry-body">Before Dr. Robert Casper left to help found TRIO Fertility (with Dr. Ken Cadesky and Dr. Carl Laskin), the clinic is remembered as having operated under a different name — something like "Centre/Center for Reproductive Health." <em>Exact former name and date unconfirmed in public sources.</em></p>
+        </div>
+      </div>
+
+      <div class="entry msf">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">2010</span><span class="tag">MSF</span></div>
+          <h3 class="entry-title">Gynecologic REI recognized as a national subspecialty</h3>
+          <p class="entry-body">The Royal College of Physicians and Surgeons of Canada (RCPSC) formally recognizes Gynecologic REI as an official subspecialty. Mount Sinai's program is among the foundational programs standardized under these national guidelines. <a href="https://obgyn.utoronto.ca/news/faculty-member-wins-distinguished-award-mentorship" target="_blank" rel="noopener">[source]</a></p>
+        </div>
+      </div>
+
+      <div class="entry msf">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">2017</span><span class="tag">MSF</span></div>
+          <h3 class="entry-title">Site relocation discussions finalized — clinic stays put</h3>
+          <p class="entry-body">Discussions on relocating the clinic are finalized: the decision is to postpone, extend the existing lease, and renovate the 4th floor instead.</p>
+        </div>
+      </div>
+
+      <div class="entry msf">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date unconfirmed">~2020</span><span class="tag">MSF</span></div>
+          <h3 class="entry-title">Dr. Shannon Moore departs</h3>
+          <p class="entry-body">Dr. Shannon Moore leaves Mount Sinai Fertility; she is now a physician at Hannam Fertility Centre.</p>
+        </div>
+      </div>
+
+      <div class="entry msf">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">2021</span><span class="tag">MSF</span></div>
+          <h3 class="entry-title">Dr. Rebecca Arthur departs for Hannam</h3>
+          <p class="entry-body">After more than a decade on staff — including leading Quality Improvement for the REI division — Dr. Rebecca Arthur leaves for Hannam Fertility Centre.</p>
+        </div>
+      </div>
+
+      <div class="entry msf">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">2021</span><span class="tag">MSF</span></div>
+          <h3 class="entry-title">Eileen McMahon, NP, departs for Hannam</h3>
+          <p class="entry-body">Nurse practitioner Eileen McMahon leaves for Hannam Fertility Centre; she later becomes a past president of CFAS.</p>
+        </div>
+      </div>
+
+      <div class="entry msf">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">Jul 2021</span><span class="tag">MSF</span></div>
+          <h3 class="entry-title">Dr. Crystal Chan departs for Markham Fertility Centre</h3>
+          <p class="entry-body">Dr. Chan leaves to become Scientific Director at Markham Fertility Centre, newly independent following its physician-led ownership change that same month.</p>
+        </div>
+      </div>
+
+      <div class="entry msf">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">Jan 2023</span><span class="tag">MSF</span></div>
+          <h3 class="entry-title">Dr. Vanessa Bacal joins</h3>
+          <p class="entry-body">Dr. Bacal joins as a REI specialist, with a focus on recurrent pregnancy loss and reproductive outcomes.</p>
+        </div>
+      </div>
+
+      <div class="entry msf">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">Apr 2023</span><span class="tag">MSF</span></div>
+          <h3 class="entry-title">Dr. Nigel Pereira joins</h3>
+          <p class="entry-body">Dr. Pereira joins as Clinician-Investigator and Associate Professor. He later supervises Canada's first birth following a uterine transplant (reported Aug 2026).</p>
+        </div>
+      </div>
+
+      <div class="entry msf">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">2023</span><span class="tag">MSF</span></div>
+          <h3 class="entry-title">Site relocation discussions restart</h3>
+          <p class="entry-body">The question of relocating is revisited, two years before it's settled again.</p>
+        </div>
+      </div>
+
+      <div class="entry msf">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">Oct 2023</span><span class="tag">MSF</span></div>
+          <h3 class="entry-title">Dr. Jennia Michaeli joins</h3>
+          <p class="entry-body">Dr. Michaeli joins as Clinician-Investigator and Assistant Professor, with a research focus on oncofertility and fertility preservation.</p>
+        </div>
+      </div>
+
+      <div class="entry msf">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">Nov 2023</span><span class="tag">MSF</span></div>
+          <h3 class="entry-title">OTC (ovarian tissue cryopreservation) program established</h3>
+          <p class="entry-body">MSF establishes its ovarian tissue cryopreservation program — fertility preservation for patients facing treatment that threatens their fertility. The program's team later leads Canada's first published ovarian tissue transport case (CMAJ, Nov 2025).</p>
+        </div>
+      </div>
+
+      <div class="entry msf">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">Nov 2023</span><span class="tag">MSF</span></div>
+          <h3 class="entry-title">Mark Evans departs after five years as Managing Director</h3>
+          <p class="entry-body">Evans, MSF's Managing Director since 2018, leaves to take the same role at Markham Fertility Centre.</p>
+        </div>
+      </div>
+
+      <div class="entry msf">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">2025</span><span class="tag">MSF</span></div>
+          <h3 class="entry-title">Site relocation discussions finalized again</h3>
+          <p class="entry-body">The relocation question is settled a second time: postpone again, extend the lease to 2032, and renovate the 7th and 4th floors.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
   <footer>
-    <p>Compiled from public reporting, clinic and company press releases, CFAS communications, and government announcements. Dates reflect the earliest clearly reported date for each event; some (marked "c." or in italics) are approximate or unconfirmed by a primary source. Not exhaustive — built as a working reference, useful to check against primary sources before citing externally.</p>
+    <p>Main timeline compiled from public reporting, clinic and company press releases, CFAS communications, and government announcements; dates reflect the earliest clearly reported date for each event, and some (marked "c." or in italics) are approximate or unconfirmed by a primary source. The Mount Sinai Fertility section draws additionally on firsthand institutional knowledge not available in public reporting. Not exhaustive — built as a working reference, useful to check against primary sources before citing externally.</p>
   </footer>
 
 </div>
