@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Ontario Fertility Timeline</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #f5f4ef;
+    --surface: #ffffff;
+    --surface-2: #edece4;
+    --ink: #1c211d;
+    --muted: #5c6459;
+    --hairline: #d9d7cc;
+    --spine: #c7c5b8;
+
+    --policy: #3a5a7a;
+    --policy-soft: #e6ecf1;
+    --market: #a3672f;
+    --market-soft: #f4ead9;
+    --clinic: #3f7a5d;
+    --clinic-soft: #e4efe8;
+    --covid: #8c4a45;
+    --covid-soft: #f3e5e3;
+
+    --accent: #3f7a5d;
+    --shadow: 0 1px 2px rgba(28,33,29,0.06), 0 6px 20px -8px rgba(28,33,29,0.12);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #141815;
+      --surface: #1b201c;
+      --surface-2: #21261f;
+      --ink: #ece9e0;
+      --muted: #a2a89a;
+      --hairline: #313730;
+      --spine: #3a4038;
+
+      --policy: #8fb4d8;
+      --policy-soft: #202b34;
+      --market: #d9a15f;
+      --market-soft: #322619;
+      --clinic: #8fc3a4;
+      --clinic-soft: #1c2921;
+      --covid: #d18e88;
+      --covid-soft: #2f1e1c;
+
+      --accent: #8fc3a4;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -8px rgba(0,0,0,0.45);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #141815;
+    --surface: #1b201c;
+    --surface-2: #21261f;
+    --ink: #ece9e0;
+    --muted: #a2a89a;
+    --hairline: #313730;
+    --spine: #3a4038;
+
+    --policy: #8fb4d8;
+    --policy-soft: #202b34;
+    --market: #d9a15f;
+    --market-soft: #322619;
+    --clinic: #8fc3a4;
+    --clinic-soft: #1c2921;
+    --covid: #d18e88;
+    --covid-soft: #2f1e1c;
+
+    --accent: #8fc3a4;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -8px rgba(0,0,0,0.45);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+  }
+
+  body {
+    margin: 0;
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 4.5rem 1.5rem 6rem;
+  }
+
+  header.masthead {
+    margin-bottom: 3.5rem;
+  }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 0.9rem;
+  }
+
+  h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-size: clamp(2.1rem, 5vw, 3.05rem);
+    line-height: 1.06;
+    letter-spacing: -0.01em;
+    margin: 0 0 1.1rem;
+    text-wrap: balance;
+    max-width: 18ch;
+  }
+
+  .dek {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--muted);
+    max-width: 56ch;
+    margin: 0 0 1.6rem;
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.1rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--hairline);
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.02em;
+    color: var(--muted);
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex: none;
+  }
+
+  .dot.policy { background: var(--policy); }
+  .dot.market { background: var(--market); }
+  .dot.clinic { background: var(--clinic); }
+  .dot.covid  { background: var(--covid); }
+
+  /* Eras */
+  .era {
+    position: relative;
+    margin-top: 3.2rem;
+  }
+
+  .era-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    margin-bottom: 1.6rem;
+    padding-left: 2.6rem;
+  }
+
+  .era-range {
+    font-family: 'IBM Plex Mono', monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 0.78rem;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  .era-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 500;
+    font-size: 1.28rem;
+    letter-spacing: -0.005em;
+  }
+
+  .era-note {
+    font-size: 0.88rem;
+    color: var(--muted);
+    padding-left: 2.6rem;
+    margin: -1.1rem 0 1.6rem;
+    max-width: 54ch;
+    line-height: 1.55;
+  }
+
+  /* Timeline spine + entries */
+  .entries {
+    position: relative;
+    padding-left: 2.6rem;
+  }
+
+  .entries::before {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 0.4rem;
+    bottom: 0.4rem;
+    width: 1px;
+    background: var(--spine);
+  }
+
+  .entry {
+    position: relative;
+    padding-bottom: 1.5rem;
+  }
+
+  .entry:last-child { padding-bottom: 0; }
+
+  .entry::before {
+    content: "";
+    position: absolute;
+    left: -2.6rem;
+    top: 0.42rem;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 2px solid var(--marker, var(--clinic));
+  }
+
+  .entry.policy { --marker: var(--policy); }
+  .entry.market { --marker: var(--market); }
+  .entry.clinic { --marker: var(--clinic); }
+  .entry.covid  { --marker: var(--covid); }
+
+  .entry-card {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: 10px;
+    padding: 1.05rem 1.2rem 1.15rem;
+    box-shadow: var(--shadow);
+  }
+
+  .entry-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.42rem;
+    flex-wrap: wrap;
+  }
+
+  .entry-date {
+    font-family: 'IBM Plex Mono', monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.64rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.16rem 0.48rem;
+    border-radius: 99px;
+    color: var(--marker);
+    background: var(--tag-bg);
+  }
+
+  .entry.policy .tag { --tag-bg: var(--policy-soft); }
+  .entry.market .tag { --tag-bg: var(--market-soft); }
+  .entry.clinic .tag { --tag-bg: var(--clinic-soft); }
+  .entry.covid  .tag { --tag-bg: var(--covid-soft); }
+
+  .entry-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    font-size: 1.06rem;
+    line-height: 1.32;
+    margin: 0 0 0.32rem;
+    text-wrap: balance;
+  }
+
+  .entry-body {
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  .entry-body strong { color: var(--ink); font-weight: 600; }
+
+  footer {
+    margin-top: 4rem;
+    padding-top: 1.6rem;
+    border-top: 1px solid var(--hairline);
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  footer a { color: var(--ink); }
+
+  @media (max-width: 520px) {
+    .wrap { padding: 3rem 1.1rem 4rem; }
+    .era-head, .era-note, .entries { padding-left: 1.9rem; }
+    .entry::before { left: -1.9rem; }
+    .entries::before { left: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">Market &amp; Policy Chronology · 1983–2026</p>
+    <h1>The Ontario Fertility Timeline</h1>
+    <p class="dek">How Ontario's IVF market moved from a de-insured, hospital-based service to a publicly co-funded industry now being consolidated by private equity — clinics, funding, and the pandemic year that accelerated it all.</p>
+    <div class="legend">
+      <span class="legend-item"><span class="dot policy"></span>Government &amp; funding</span>
+      <span class="legend-item"><span class="dot market"></span>Ownership &amp; M&amp;A</span>
+      <span class="legend-item"><span class="dot clinic"></span>Clinics &amp; clinical practice</span>
+      <span class="legend-item"><span class="dot covid"></span>COVID-19</span>
+    </div>
+  </header>
+
+  <!-- ERA 1 -->
+  <section class="era">
+    <div class="era-head">
+      <span class="era-range">1983–2010</span>
+      <span class="era-title">Before public funding</span>
+    </div>
+    <p class="era-note">IVF in Ontario starts inside teaching hospitals, gets de-insured in the '90s, and slowly spins out into independent, physician-owned clinics.</p>
+    <div class="entries">
+
+      <div class="entry clinic">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">1983</span><span class="tag">Clinic</span></div>
+          <h3 class="entry-title">Toronto East General records Canada's first confirmed IVF pregnancy</h3>
+          <p class="entry-body">Toronto East General Hospital (now Michael Garron Hospital) recorded Canada's first confirmed IVF pregnancy the same year a UBC patient delivered the country's first IVF birth, on Christmas Day 1983 — the starting point for organized IVF practice in Ontario.</p>
+        </div>
+      </div>
+
+      <div class="entry policy">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">Apr 1994</span><span class="tag">Policy</span></div>
+          <h3 class="entry-title">Ontario de-lists IVF from OHIP</h3>
+          <p class="entry-body">The province removes general IVF coverage from public health insurance, keeping a narrow exception only for complete bilateral fallopian tube blockage. IVF becomes almost entirely a private-pay service for the next two decades.</p>
+        </div>
+      </div>
+
+      <div class="entry clinic">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">c. 2005–2010</span><span class="tag">Clinic</span></div>
+          <h3 class="entry-title">The "extrication wave": clinics spin out of hospitals</h3>
+          <p class="entry-body">Programs originally embedded in institutions like Mount Sinai and the Ottawa Civic begin separating into independent, physician-owned practices for operational flexibility — the structural shift that later makes the sector acquirable.</p>
+        </div>
+      </div>
+
+      <div class="entry policy">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">2009</span><span class="tag">Policy</span></div>
+          <h3 class="entry-title">Expert panel recommends public IVF funding</h3>
+          <p class="entry-body">A provincial expert panel recommends Ontario significantly expand IVF funding and mandate single-embryo transfer, citing cost as the primary barrier to care — the blueprint the government adopts six years later.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ERA 2 -->
+  <section class="era">
+    <div class="era-head">
+      <span class="era-range">2015–2019</span>
+      <span class="era-title">The Ontario Fertility Program launches</span>
+    </div>
+    <p class="era-note">Public funding returns for the first time in over 20 years — and immediately runs into demand it wasn't sized for.</p>
+    <div class="entries">
+
+      <div class="entry policy">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">Apr 2015</span><span class="tag">Policy</span></div>
+          <h3 class="entry-title">Wynne government announces publicly funded IVF</h3>
+          <p class="entry-body">Health Minister Eric Hoskins announces roughly <strong>$50 million a year</strong> in new funding for one publicly funded IVF cycle plus unlimited funded IUI, for OHIP-eligible people under 43 — the policy that becomes the Ontario Fertility Program (OFP).</p>
+        </div>
+      </div>
+
+      <div class="entry policy">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">Oct 2015</span><span class="tag">Policy</span></div>
+          <h3 class="entry-title">Ontario names the 50-clinic funded network</h3>
+          <p class="entry-body">The province details the network of roughly 50 participating clinics and hospitals expected to deliver the program, alongside the mandatory single-embryo-transfer rule designed to cut costly multiple-birth complications.</p>
+        </div>
+      </div>
+
+      <div class="entry policy">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">Dec 2015</span><span class="tag">Policy</span></div>
+          <h3 class="entry-title">Ontario Fertility Program formally opens</h3>
+          <p class="entry-body">Funded cycles begin province-wide. It is the first general public IVF funding in Ontario since the 1994 delisting.</p>
+        </div>
+      </div>
+
+      <div class="entry clinic">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">2016</span><span class="tag">Clinic</span></div>
+          <h3 class="entry-title">Wait lists balloon; some clinics turn to a lottery</h3>
+          <p class="entry-body">Demand for funded cycles far exceeds capacity, producing wait lists reported as long as three years. Several clinics adopt lottery-style systems to allocate limited funded slots fairly among patients.</p>
+        </div>
+      </div>
+
+      <div class="entry clinic">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">Oct 2016</span><span class="tag">Clinic</span></div>
+          <h3 class="entry-title">First OFP-funded babies are born</h3>
+          <p class="entry-body">The first births conceived through publicly funded cycles arrive, roughly ten months after the program opened.</p>
+        </div>
+      </div>
+
+      <div class="entry policy">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">Dec 2016</span><span class="tag">Policy</span></div>
+          <h3 class="entry-title">OFP's first anniversary: 6,500+ people funded</h3>
+          <p class="entry-body">The province marks one year of the program, reporting more than 6,500 people funded to date and projecting up to $500M in avoided health costs over a decade from fewer multiple-birth complications under the single-embryo-transfer rule.</p>
+        </div>
+      </div>
+
+      <div class="entry clinic">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">2016</span><span class="tag">Clinic</span></div>
+          <h3 class="entry-title">Anova Fertility &amp; Reproductive Health founded</h3>
+          <p class="entry-body">Dr. Marjorie Dixon founds Anova in Toronto. It grows into one of the GTA's larger independent clinics before taking private-equity backing three years later.</p>
+        </div>
+      </div>
+
+      <div class="entry policy">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">Jun 2019</span><span class="tag">Policy</span></div>
+          <h3 class="entry-title">Federal surrogate/donor reimbursement rules take effect</h3>
+          <p class="entry-body">Health Canada's <em>Reimbursement Related to Assisted Human Reproduction Regulations</em> come into force, finally clarifying which surrogate and donor expenses can legally be reimbursed under the 2004 Assisted Human Reproduction Act — directly shaping third-party family building through Ontario clinics.</p>
+        </div>
+      </div>
+
+      <div class="entry market">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">Jun 27, 2019</span><span class="tag">Ownership</span></div>
+          <h3 class="entry-title">Anova takes on its first private-equity partner</h3>
+          <p class="entry-body">Persistence Capital Partners, a Canadian healthcare-focused PE firm, invests in Anova to fund new clinics and expansion — an early signal of institutional capital moving into Ontario fertility care.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ERA 3 -->
+  <section class="era">
+    <div class="era-head">
+      <span class="era-range">2020–2021</span>
+      <span class="era-title">COVID-19, then the roll-up begins</span>
+    </div>
+    <p class="era-note">The pandemic forces a province-wide shutdown of fertility care — and the same year, the first national private-equity platform launches out of Toronto.</p>
+    <div class="entries">
+
+      <div class="entry covid">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">Feb 25, 2020</span><span class="tag">COVID-19</span></div>
+          <h3 class="entry-title">CFAS issues its first COVID-19 advisory</h3>
+          <p class="entry-body">The Canadian Fertility &amp; Andrology Society advises caution around non-essential travel and flags that pregnancy increases susceptibility to respiratory infection — the first in a long run of pandemic guidance to Canadian clinics.</p>
+        </div>
+      </div>
+
+      <div class="entry covid">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">Mar 18, 2020</span><span class="tag">COVID-19</span></div>
+          <h3 class="entry-title">Fertility treatment formally suspended</h3>
+          <p class="entry-body">CFAS directs clinics to move consultations to telemedicine and suspend all diagnostic and elective procedures, pausing new cycle starts except for urgent oncology fertility preservation. Ontario clinics, including Mount Sinai Fertility, halt active treatment.</p>
+        </div>
+      </div>
+
+      <div class="entry covid">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">Apr–May 2020</span><span class="tag">COVID-19</span></div>
+          <h3 class="entry-title">CFAS publishes a phased-reopening framework</h3>
+          <p class="entry-body">Guidance shifts from suspension to restart planning on April 15, then a detailed resumption framework follows on May 13, once local safety criteria can be met.</p>
+        </div>
+      </div>
+
+      <div class="entry covid">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">May–Jun 2020</span><span class="tag">COVID-19</span></div>
+          <h3 class="entry-title">Ontario clinics begin phased reopening</h3>
+          <p class="entry-body">Clinics across the province resume treatment in stages as case counts ease, with CFAS endorsing an ASRM/ESHRE/IFFS joint statement in June affirming reproductive care as essential healthcare.</p>
+        </div>
+      </div>
+
+      <div class="entry market">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">Jul 3, 2020</span><span class="tag">Ownership</span></div>
+          <h3 class="entry-title">The Fertility Partners launches with $90M in PE backing</h3>
+          <p class="entry-body">Backed by Peloton Capital Management and Heal Partners, TFP launches as a national consolidation platform, acquiring seven founding clinics — including Procrea's Vaughan and Newmarket locations and Mississauga's Reproductive Care Centre. It's the start of large-scale private-equity roll-up in Canadian fertility care.</p>
+        </div>
+      </div>
+
+      <div class="entry market">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">2021</span><span class="tag">Ownership</span></div>
+          <h3 class="entry-title">TRIO Fertility acquired by Spain's Eugin Group</h3>
+          <p class="entry-body">TRIO, one of Toronto's largest and best-known independent clinics, is acquired by the PE-backed Eugin Group — its first change of ownership, and not its last.</p>
+        </div>
+      </div>
+
+      <div class="entry clinic">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">Jul 19, 2021</span><span class="tag">Clinic</span></div>
+          <h3 class="entry-title">Procrea Vaughan &amp; Newmarket rebrand as Generation Fertility</h3>
+          <p class="entry-body">The Fertility Partners renames its Vaughan and Newmarket clinics — operating as Procrea since 2011 — to Generation Fertility, alongside the reopening of a larger, renovated Newmarket location.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ERA 4 -->
+  <section class="era">
+    <div class="era-head">
+      <span class="era-range">2022–2024</span>
+      <span class="era-title">The consolidation wave</span>
+    </div>
+    <p class="era-note">A dense run of acquisitions reshapes GTA and Ontario ownership, even as new venture-backed challenger clinics try to open alongside the roll-ups.</p>
+    <div class="entries">
+
+      <div class="entry market">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">Feb 7, 2022</span><span class="tag">Ownership</span></div>
+          <h3 class="entry-title">Fertility Partners acquires Ottawa Fertility Centre</h3>
+          <p class="entry-body">TFP extends its Ontario footprint east, folding one of the province's larger academically-affiliated clinics into its network.</p>
+        </div>
+      </div>
+
+      <div class="entry market">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">2022</span><span class="tag">Ownership</span></div>
+          <h3 class="entry-title">Fertility Partners acquires KARMA (Kitchener)</h3>
+          <p class="entry-body">Kitchener Area Reproductive Medicine Associates joins the TFP network, extending the platform into southwestern Ontario.</p>
+        </div>
+      </div>
+
+      <div class="entry market">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">2022</span><span class="tag">Ownership</span></div>
+          <h3 class="entry-title">Fertility Partners acquires TIRM and sperm bank ReproMed</h3>
+          <p class="entry-body">The Toronto Institute for Reproductive Medicine and its affiliated sperm bank, ReproMed, join TFP — by this point TFP operates seven Ontario locations among 13 IVF centres nationally.</p>
+        </div>
+      </div>
+
+      <div class="entry market">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">2022</span><span class="tag">Ownership</span></div>
+          <h3 class="entry-title">CCRM Fertility (US) acquires Hannam Fertility Centre</h3>
+          <p class="entry-body">Denver-based CCRM Fertility enters Toronto by acquiring Dr. Tom Hannam's downtown clinic, rebranding it CCRM Fertility Toronto — the first major US network to establish a direct Ontario presence.</p>
+        </div>
+      </div>
+
+      <div class="entry clinic">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">2023</span><span class="tag">Clinic</span></div>
+          <h3 class="entry-title">Anova opens a second downtown Toronto location</h3>
+          <p class="entry-body">Anova expands its physical footprint in the city with a new downtown clinic, still independent of the PE roll-up platforms at this stage.</p>
+        </div>
+      </div>
+
+      <div class="entry market">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">Jun 2023</span><span class="tag">Ownership</span></div>
+          <h3 class="entry-title">Twig Fertility raises an $8M Series A</h3>
+          <p class="entry-body">Rhino Ventures leads an $8-million round into Twig, a tech-forward Toronto clinic — venture capital, not just PE roll-up money, entering the sector.</p>
+        </div>
+      </div>
+
+      <div class="entry clinic">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">2023</span><span class="tag">Clinic</span></div>
+          <h3 class="entry-title">Pollin Fertility opens in Toronto with $20M backing</h3>
+          <p class="entry-body">A new Toronto clinic launches backed by $20 million from David Thomson's Osmington Inc. — another well-capitalized new entrant competing against the consolidating incumbents.</p>
+        </div>
+      </div>
+
+      <div class="entry market">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">2023</span><span class="tag">Ownership</span></div>
+          <h3 class="entry-title">Vitrolife acquires Igenomix for ~$2.8B</h3>
+          <p class="entry-body">A global consolidation deal in genetic testing and embryo screening — infrastructure that Ontario IVF labs, including those doing PGT, rely on — signalling the roll-up extending past clinics into the supply chain.</p>
+        </div>
+      </div>
+
+      <div class="entry market">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">Jan 31, 2024</span><span class="tag">Ownership</span></div>
+          <h3 class="entry-title">IVI RMA completes $535M purchase of Eugin's North American arm</h3>
+          <p class="entry-body">Spain's IVI RMA (backed by KKR) completes a $535-million acquisition of Eugin Group's Boston IVF network and TRIO Fertility — TRIO's second change of ownership in three years.</p>
+        </div>
+      </div>
+
+      <div class="entry clinic">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">2024</span><span class="tag">Clinic</span></div>
+          <h3 class="entry-title">Market snapshot: 43 clinics, ~7,700 private cycles a year</h3>
+          <p class="entry-body">Ontario now counts roughly 43 fertility clinics performing more than 7,700 privately funded IVF cycles annually (over $150M in private spend) — with close to a third of clinics tied to investor-backed networks rather than independent physician owners.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ERA 5 -->
+  <section class="era">
+    <div class="era-head">
+      <span class="era-range">2024–2026</span>
+      <span class="era-title">Funding expands again</span>
+    </div>
+    <p class="era-note">A decade after the OFP first launched, Queen's Park returns with its largest funding increases yet — alongside a new personal tax credit.</p>
+    <div class="entries">
+
+      <div class="entry policy">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">Oct 28, 2024</span><span class="tag">Policy</span></div>
+          <h3 class="entry-title">Ontario commits $150M to triple funded families</h3>
+          <p class="entry-body">The province announces $150 million over two years to expand the OFP through hospitals and community clinics, aiming to roughly triple the number of families accessing government-funded fertility services — plus a new personal fertility tax credit for January 2025.</p>
+        </div>
+      </div>
+
+      <div class="entry policy">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">Jan 2025</span><span class="tag">Policy</span></div>
+          <h3 class="entry-title">Ontario Fertility Tax Credit takes effect</h3>
+          <p class="entry-body">Residents can now claim 25% of eligible fertility expenses — IVF cycles, medications, diagnostic testing, and related travel — up to $5,000 per year, backed by $115 million over three years.</p>
+        </div>
+      </div>
+
+      <div class="entry policy">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">Oct 8–17, 2025</span><span class="tag">Policy</span></div>
+          <h3 class="entry-title">A further ~$100–150M announced for 2025–26</h3>
+          <p class="entry-body">Ontario adds another round of funding for the 2025–2026 period — framed alongside the 2024 commitment as a combined $250 million push — aimed at cutting wait times and further expanding funded cycles through hospitals and community clinics.</p>
+        </div>
+      </div>
+
+      <div class="entry market">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">2025</span><span class="tag">Ownership</span></div>
+          <h3 class="entry-title">IVI RMA keeps consolidating across North America</h3>
+          <p class="entry-body">Fresh acquisitions elsewhere in IVI RMA's North American network underline that the roll-up pressure on independent clinics — the kind that reshaped TRIO and Hannam — is still active going into 2026.</p>
+        </div>
+      </div>
+
+      <div class="entry market">
+        <div class="entry-card">
+          <div class="entry-meta"><span class="entry-date">2026</span><span class="tag">Ownership</span></div>
+          <h3 class="entry-title">Physician ownership falls to roughly 30% of the market</h3>
+          <p class="entry-body">A decade after independent physician-owners controlled 70–80% of Canadian fertility practices, that share has fallen to roughly 30% — the rest split between private-equity platforms, partnerships, and larger conglomerates.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    <p>Compiled from public reporting, clinic and company press releases, CFAS communications, and government announcements. Dates reflect the earliest clearly reported date for each event; some (marked "c.") are approximate. Not exhaustive — built as a working reference, useful to check against primary sources before citing externally.</p>
+  </footer>
+
+</div>
+</body>
+</html>
